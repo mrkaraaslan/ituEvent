@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA25141924C0EF06006F4D6F /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25141824C0EF06006F4D6F /* SignInView.swift */; };
+		AA25141B24C0F1D1006F4D6F /* MyExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25141A24C0F1D1006F4D6F /* MyExtensions.swift */; };
+		AA25141D24C0FBFD006F4D6F /* MyTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25141C24C0FBFD006F4D6F /* MyTextField.swift */; };
+		AA25141F24C104F1006F4D6F /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25141E24C104F1006F4D6F /* SignUpView.swift */; };
+		AA25142124C10A3B006F4D6F /* MySecureField.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25142024C10A3B006F4D6F /* MySecureField.swift */; };
+		AA25142324C10C0D006F4D6F /* ForgotEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25142224C10C0D006F4D6F /* ForgotEmailView.swift */; };
+		AA25142524C11A3F006F4D6F /* MyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25142424C11A3F006F4D6F /* MyButton.swift */; };
+		AA25142724C11DBC006F4D6F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25142624C11DBC006F4D6F /* ProfileView.swift */; };
+		AA25142924C11DF7006F4D6F /* EventsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25142824C11DF7006F4D6F /* EventsView.swift */; };
+		AA25142B24C11E13006F4D6F /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25142A24C11E13006F4D6F /* AppView.swift */; };
+		AA25142D24C122EE006F4D6F /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25142C24C122EE006F4D6F /* ImagePickerView.swift */; };
+		AA25142F24C124C2006F4D6F /* MyImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25142E24C124C2006F4D6F /* MyImage.swift */; };
 		AA725F2124C0913100927A1B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA725F2024C0913100927A1B /* AppDelegate.swift */; };
 		AA725F2324C0913100927A1B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA725F2224C0913100927A1B /* SceneDelegate.swift */; };
 		AA725F2524C0913100927A1B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA725F2424C0913100927A1B /* ContentView.swift */; };
@@ -16,6 +28,18 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AA25141824C0EF06006F4D6F /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; usesTabs = 0; };
+		AA25141A24C0F1D1006F4D6F /* MyExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyExtensions.swift; sourceTree = "<group>"; };
+		AA25141C24C0FBFD006F4D6F /* MyTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTextField.swift; sourceTree = "<group>"; };
+		AA25141E24C104F1006F4D6F /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		AA25142024C10A3B006F4D6F /* MySecureField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySecureField.swift; sourceTree = "<group>"; };
+		AA25142224C10C0D006F4D6F /* ForgotEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotEmailView.swift; sourceTree = "<group>"; };
+		AA25142424C11A3F006F4D6F /* MyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyButton.swift; sourceTree = "<group>"; };
+		AA25142624C11DBC006F4D6F /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		AA25142824C11DF7006F4D6F /* EventsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsView.swift; sourceTree = "<group>"; };
+		AA25142A24C11E13006F4D6F /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
+		AA25142C24C122EE006F4D6F /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
+		AA25142E24C124C2006F4D6F /* MyImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyImage.swift; sourceTree = "<group>"; };
 		AA725F1D24C0913100927A1B /* ituEvent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ituEvent.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA725F2024C0913100927A1B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AA725F2224C0913100927A1B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +83,18 @@
 				AA725F2024C0913100927A1B /* AppDelegate.swift */,
 				AA725F2224C0913100927A1B /* SceneDelegate.swift */,
 				AA725F2424C0913100927A1B /* ContentView.swift */,
+				AA25141824C0EF06006F4D6F /* SignInView.swift */,
+				AA25141E24C104F1006F4D6F /* SignUpView.swift */,
+				AA25142224C10C0D006F4D6F /* ForgotEmailView.swift */,
+				AA25142A24C11E13006F4D6F /* AppView.swift */,
+				AA25142824C11DF7006F4D6F /* EventsView.swift */,
+				AA25142624C11DBC006F4D6F /* ProfileView.swift */,
+				AA25142C24C122EE006F4D6F /* ImagePickerView.swift */,
+				AA25141C24C0FBFD006F4D6F /* MyTextField.swift */,
+				AA25142024C10A3B006F4D6F /* MySecureField.swift */,
+				AA25142424C11A3F006F4D6F /* MyButton.swift */,
+				AA25142E24C124C2006F4D6F /* MyImage.swift */,
+				AA25141A24C0F1D1006F4D6F /* MyExtensions.swift */,
 				AA725F2624C0913100927A1B /* Assets.xcassets */,
 				AA725F2B24C0913100927A1B /* LaunchScreen.storyboard */,
 				AA725F2E24C0913100927A1B /* Info.plist */,
@@ -146,9 +182,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA25142B24C11E13006F4D6F /* AppView.swift in Sources */,
 				AA725F2124C0913100927A1B /* AppDelegate.swift in Sources */,
 				AA725F2324C0913100927A1B /* SceneDelegate.swift in Sources */,
+				AA25141B24C0F1D1006F4D6F /* MyExtensions.swift in Sources */,
+				AA25142D24C122EE006F4D6F /* ImagePickerView.swift in Sources */,
+				AA25141F24C104F1006F4D6F /* SignUpView.swift in Sources */,
+				AA25141D24C0FBFD006F4D6F /* MyTextField.swift in Sources */,
+				AA25142F24C124C2006F4D6F /* MyImage.swift in Sources */,
+				AA25141924C0EF06006F4D6F /* SignInView.swift in Sources */,
+				AA25142324C10C0D006F4D6F /* ForgotEmailView.swift in Sources */,
+				AA25142524C11A3F006F4D6F /* MyButton.swift in Sources */,
 				AA725F2524C0913100927A1B /* ContentView.swift in Sources */,
+				AA25142724C11DBC006F4D6F /* ProfileView.swift in Sources */,
+				AA25142124C10A3B006F4D6F /* MySecureField.swift in Sources */,
+				AA25142924C11DF7006F4D6F /* EventsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
