@@ -10,6 +10,7 @@ import SwiftUI
 
 struct SignUpView: View {
     
+    @Binding var signIn: Bool
     @State var name = ""
     @State var email = ""
     @State var password = ""
@@ -30,6 +31,7 @@ struct SignUpView: View {
                         //: sign up and navigation
                         //: send verification mail
                         //: show verifcation alert
+                        self.signIn = true
                     }) {
                         MyButton(text: "Kayıt Ol")
                     }.padding(.top, 24)
@@ -37,7 +39,12 @@ struct SignUpView: View {
                 
                 Text("Giriş Yap")
                     .foregroundColor(.white)
-                    //: onTapGesture --> navigation
+                    .onTapGesture {
+                        withAnimation(){
+                            self.signIn = true
+                        }
+                    }
+                    
             }.padding([.leading, .trailing])
         }
     }
@@ -45,6 +52,6 @@ struct SignUpView: View {
 
 struct SignUpView_Previews: PreviewProvider {
     static var previews: some View {
-        SignUpView()
+        SignUpView(signIn: .constant(false))
     }
 }

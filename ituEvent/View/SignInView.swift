@@ -10,6 +10,9 @@ import SwiftUI
 
 struct SignInView: View {
     
+    @EnvironmentObject var current: UserClass
+    @Binding var signIn: Bool
+    
     @State var email = ""
     @State var password = ""
     
@@ -33,6 +36,10 @@ struct SignInView: View {
                     Button(action: {
                         //: login and navigation
                         //: check email verification
+                        UserDefaults.standard.set(true, forKey: "isLoggedIn")
+                        withAnimation() {
+                            self.current.isLoggedIn = true
+                        }
                     }) {
                         MyButton(text: "Giriş")
                     }.padding(.top, 24)
@@ -49,6 +56,11 @@ struct SignInView: View {
                     })
                     Text("  /  ")
                     Text("Kayıt Ol")
+                        .onTapGesture {
+                            withAnimation() {
+                                self.signIn = false
+                            }
+                        }
                     //: navigation
                 }
                 .foregroundColor(.white)
@@ -60,6 +72,6 @@ struct SignInView: View {
 
 struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
-        SignInView()
+        SignInView(signIn: .constant(true)).environmentObject(UserClass())
     }
 }

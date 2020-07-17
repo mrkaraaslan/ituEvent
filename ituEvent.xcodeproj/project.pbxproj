@@ -25,6 +25,11 @@
 		AA725F2724C0913100927A1B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA725F2624C0913100927A1B /* Assets.xcassets */; };
 		AA725F2A24C0913100927A1B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA725F2924C0913100927A1B /* Preview Assets.xcassets */; };
 		AA725F2D24C0913100927A1B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA725F2B24C0913100927A1B /* LaunchScreen.storyboard */; };
+		AABF92ED24C211560073C661 /* SearchEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABF92EC24C211560073C661 /* SearchEventView.swift */; };
+		AABF92EF24C22ABF0073C661 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABF92EE24C22ABF0073C661 /* SettingsView.swift */; };
+		AADC0A5624C1B87C0042CDA0 /* SignView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADC0A5524C1B87C0042CDA0 /* SignView.swift */; };
+		AADC0A5924C1B9630042CDA0 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADC0A5824C1B9630042CDA0 /* User.swift */; };
+		AADC0A5B24C1C5660042CDA0 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADC0A5A24C1C5660042CDA0 /* Event.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +53,11 @@
 		AA725F2924C0913100927A1B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AA725F2C24C0913100927A1B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AA725F2E24C0913100927A1B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AABF92EC24C211560073C661 /* SearchEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEventView.swift; sourceTree = "<group>"; };
+		AABF92EE24C22ABF0073C661 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		AADC0A5524C1B87C0042CDA0 /* SignView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignView.swift; sourceTree = "<group>"; };
+		AADC0A5824C1B9630042CDA0 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		AADC0A5A24C1C5660042CDA0 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,19 +92,9 @@
 			children = (
 				AA725F2024C0913100927A1B /* AppDelegate.swift */,
 				AA725F2224C0913100927A1B /* SceneDelegate.swift */,
-				AA725F2424C0913100927A1B /* ContentView.swift */,
-				AA25141824C0EF06006F4D6F /* SignInView.swift */,
-				AA25141E24C104F1006F4D6F /* SignUpView.swift */,
-				AA25142224C10C0D006F4D6F /* ForgotEmailView.swift */,
-				AA25142A24C11E13006F4D6F /* AppView.swift */,
-				AA25142824C11DF7006F4D6F /* EventsView.swift */,
-				AA25142624C11DBC006F4D6F /* ProfileView.swift */,
-				AA25142C24C122EE006F4D6F /* ImagePickerView.swift */,
-				AA25141C24C0FBFD006F4D6F /* MyTextField.swift */,
-				AA25142024C10A3B006F4D6F /* MySecureField.swift */,
-				AA25142424C11A3F006F4D6F /* MyButton.swift */,
-				AA25142E24C124C2006F4D6F /* MyImage.swift */,
-				AA25141A24C0F1D1006F4D6F /* MyExtensions.swift */,
+				AADC0A5324C1B7BB0042CDA0 /* View */,
+				AADC0A5424C1B7DC0042CDA0 /* My */,
+				AADC0A5724C1B94D0042CDA0 /* Modal */,
 				AA725F2624C0913100927A1B /* Assets.xcassets */,
 				AA725F2B24C0913100927A1B /* LaunchScreen.storyboard */,
 				AA725F2E24C0913100927A1B /* Info.plist */,
@@ -109,6 +109,45 @@
 				AA725F2924C0913100927A1B /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		AADC0A5324C1B7BB0042CDA0 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				AA725F2424C0913100927A1B /* ContentView.swift */,
+				AADC0A5524C1B87C0042CDA0 /* SignView.swift */,
+				AA25141824C0EF06006F4D6F /* SignInView.swift */,
+				AA25142224C10C0D006F4D6F /* ForgotEmailView.swift */,
+				AA25141E24C104F1006F4D6F /* SignUpView.swift */,
+				AA25142A24C11E13006F4D6F /* AppView.swift */,
+				AABF92EC24C211560073C661 /* SearchEventView.swift */,
+				AA25142824C11DF7006F4D6F /* EventsView.swift */,
+				AA25142624C11DBC006F4D6F /* ProfileView.swift */,
+				AABF92EE24C22ABF0073C661 /* SettingsView.swift */,
+				AA25142C24C122EE006F4D6F /* ImagePickerView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		AADC0A5424C1B7DC0042CDA0 /* My */ = {
+			isa = PBXGroup;
+			children = (
+				AA25141C24C0FBFD006F4D6F /* MyTextField.swift */,
+				AA25142024C10A3B006F4D6F /* MySecureField.swift */,
+				AA25142424C11A3F006F4D6F /* MyButton.swift */,
+				AA25142E24C124C2006F4D6F /* MyImage.swift */,
+				AA25141A24C0F1D1006F4D6F /* MyExtensions.swift */,
+			);
+			path = My;
+			sourceTree = "<group>";
+		};
+		AADC0A5724C1B94D0042CDA0 /* Modal */ = {
+			isa = PBXGroup;
+			children = (
+				AADC0A5824C1B9630042CDA0 /* User.swift */,
+				AADC0A5A24C1C5660042CDA0 /* Event.swift */,
+			);
+			path = Modal;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -187,14 +226,19 @@
 				AA725F2324C0913100927A1B /* SceneDelegate.swift in Sources */,
 				AA25141B24C0F1D1006F4D6F /* MyExtensions.swift in Sources */,
 				AA25142D24C122EE006F4D6F /* ImagePickerView.swift in Sources */,
+				AABF92EF24C22ABF0073C661 /* SettingsView.swift in Sources */,
 				AA25141F24C104F1006F4D6F /* SignUpView.swift in Sources */,
 				AA25141D24C0FBFD006F4D6F /* MyTextField.swift in Sources */,
+				AADC0A5924C1B9630042CDA0 /* User.swift in Sources */,
 				AA25142F24C124C2006F4D6F /* MyImage.swift in Sources */,
+				AABF92ED24C211560073C661 /* SearchEventView.swift in Sources */,
 				AA25141924C0EF06006F4D6F /* SignInView.swift in Sources */,
+				AADC0A5B24C1C5660042CDA0 /* Event.swift in Sources */,
 				AA25142324C10C0D006F4D6F /* ForgotEmailView.swift in Sources */,
 				AA25142524C11A3F006F4D6F /* MyButton.swift in Sources */,
 				AA725F2524C0913100927A1B /* ContentView.swift in Sources */,
 				AA25142724C11DBC006F4D6F /* ProfileView.swift in Sources */,
+				AADC0A5624C1B87C0042CDA0 /* SignView.swift in Sources */,
 				AA25142124C10A3B006F4D6F /* MySecureField.swift in Sources */,
 				AA25142924C11DF7006F4D6F /* EventsView.swift in Sources */,
 			);

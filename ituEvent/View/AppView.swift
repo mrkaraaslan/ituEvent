@@ -9,26 +9,36 @@
 import SwiftUI
 
 struct AppView: View {
+    
+    @EnvironmentObject var current: UserClass
+    
     var body: some View {
         TabView {
+            SearchEventView()
+                .tabItem {
+                    Image(systemName: "magnifyingglass")
+                    Text("Etkinlik Ara")
+            }
+            
             EventsView()
                 .tabItem {
                     Image(systemName: "list.bullet")
                     Text("Etkinlikler")
             }
             
-            ProfileView()
+            ProfileView().environmentObject(current)
                 .tabItem {
                     Image(systemName: "person.circle")
-                    Text("Profile")
+                    Text("Profil")
             }
-            
+        }.onAppear() {
+            self.current.info()
         }
     }
 }
 
 struct AppView_Previews: PreviewProvider {
     static var previews: some View {
-        AppView()
+        AppView().environmentObject(UserClass())
     }
 }
