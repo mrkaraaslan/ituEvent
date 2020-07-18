@@ -28,6 +28,23 @@ class UserClass: ObservableObject  {
         user.email = "karaaslan18@itu.edu.tr"
         user.department = "Computer Engineering"
     }
+    
+    func leveller() -> String {
+        var text = ""
+        switch user.level {
+            case 0:
+                text = "Lisans"
+            case 1:
+                text = "Yüksek Lisans"
+            case 2:
+                text = "Mezun"
+            case 3:
+                text = "Akademisyen"
+            default:
+                text = "ERROR"
+        }
+        return text
+    }
 }
 
 struct User {
@@ -36,7 +53,7 @@ struct User {
     var name: String
     var email: String
     var department: String
-    var level: Int // 0: student | 1: assistant | 2: teacher | 3: graduated
+    var level: Int
     var cEvents: [String] // list of created  events' ids
     var aEvents: [String] // list of event attendences' ids
     

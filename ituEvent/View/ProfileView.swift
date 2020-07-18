@@ -83,7 +83,7 @@ struct ProfileView: View {
                     MyText(info: "İsim", text: current.user.name)
                     MyText(info: "Email", text: current.user.email)
                     MyText(info: "Bölüm", text: current.user.department)
-                    MyText(info: "Düzey", text: leveller(current.user.level))
+                    MyText(info: "Düzey", text: current.leveller())
                 }
                 .frame(maxHeight: .infinity, alignment: .top)
                 .padding(.top, 32)
@@ -107,49 +107,10 @@ struct ProfileView: View {
             )
         }
     }
-    func leveller(_ level: Int) -> String {
-        var text = ""
-        switch level {
-            case 0:
-                text = "Lisans"
-            case 1:
-                text = "Yüksek Lisans"
-            case 2:
-                text = "Mezun"
-            case 3:
-                text = "Akademisyen"
-            default:
-                text = "ERROR"
-        }
-        return text
-    }
 }
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         ProfileView().environmentObject(UserClass())
-    }
-}
-
-struct MyText: View {
-    
-    var info: String
-    var text: String
-    
-    var body: some View {
-        VStack {
-            Text(info)
-                .font(.system(size: 12))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .foregroundColor(.gray)
-            VStack(spacing: 0) {
-                Text(text)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.leading)
-                Rectangle()
-                    .frame(height: 1)
-                    .foregroundColor(.mainColor)
-            }
-        }
     }
 }
