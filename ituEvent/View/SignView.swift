@@ -11,16 +11,16 @@ import SwiftUI
 struct SignView: View {
     
     @EnvironmentObject var current: UserClass
-    @State var signIn = true
+    @State var showSignInView = true
     
     var body: some View {
         VStack {
-            if signIn {
-                SignInView(signIn: $signIn).environmentObject(current)
+            if showSignInView {
+                SignInView(showSignInView: $showSignInView).environmentObject(current)
                     .transition(.asymmetric(insertion: .slide, removal: .move(edge: .leading)))
             }
             else {
-                SignUpView(signIn: $signIn)
+                SignUpView(showSignInView: $showSignInView)
                     .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .slide))
             }
         }

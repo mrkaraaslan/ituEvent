@@ -11,7 +11,7 @@ import Firebase
 
 struct SignUpView: View {
     
-    @Binding var signIn: Bool
+    @Binding var showSignInView: Bool
     @State var email = ""
     @State var password = ""
     @State var passCheck = ""
@@ -36,7 +36,7 @@ struct SignUpView: View {
                         // send verification mail
                         // show verifcation alert
                         if self.check() {
-                            self.sign()
+                            self.signUp()
                         }
                     }) {
                         MyButton(text: "Kayıt Ol")
@@ -51,12 +51,13 @@ struct SignUpView: View {
                     .foregroundColor(.white)
                     .onTapGesture {
                         withAnimation(){
-                            self.signIn = true
+                            self.showSignInView = true
                         }
                     }
             }.padding([.leading, .trailing])
         }
     }
+    
     func check() -> Bool{
         
         var r = false
@@ -87,7 +88,7 @@ struct SignUpView: View {
         return r
     }
     
-    func sign() {
+    func signUp() {
         let email = self.email.trimmingCharacters(in: .whitespaces) //remove pre and post spaces
         var message = ""
         
@@ -106,6 +107,7 @@ struct SignUpView: View {
             }
         }
     }
+    
     func verificate(){
         var message = ""
         Auth.auth().currentUser?.sendEmailVerification { (err) in
@@ -124,7 +126,7 @@ struct SignUpView: View {
                 self.alert = Alert(
                     title: Text("Tebrikler"),
                     message: Text(message),
-                    dismissButton: .cancel(Text("Tamam"), action: {withAnimation(){self.signIn = true}})
+                    dismissButton: .cancel(Text("Tamam"), action: {withAnimation(){self.showSignInView = true}})
                 )
                 self.showAlert = true
             }
@@ -134,6 +136,6 @@ struct SignUpView: View {
 
 struct SignUpView_Previews: PreviewProvider {
     static var previews: some View {
-        SignUpView(signIn: .constant(false))
+        SignUpView(showSignInView: .constant(false))
     }
 }
