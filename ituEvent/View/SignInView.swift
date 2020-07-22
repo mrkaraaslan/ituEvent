@@ -14,13 +14,15 @@ struct SignInView: View {
     @EnvironmentObject var current: UserClass
     @Binding var showSignInView: Bool
     
-    @State var email = ""
+    @State var email = UserDefaults.standard.string(forKey: "savedEmail") ?? ""
     @State var password = ""
     
     @State var showForgotEmailSheet = false
     
     @State var alert: Alert? = nil
     @State var showAlert = false
+    
+    @State var rememberMe = UserDefaults.standard.bool(forKey: "rememberMe")
     
     var body: some View {
         ZStack {
@@ -35,7 +37,24 @@ struct SignInView: View {
                         .font(.largeTitle)
                     
                     MyTextField(placeHolder: "İTÜ mailiniz", text: $email, overlay: false)
+                        .keyboardType(.emailAddress)
+                        .autocapitalization(.none)
                     MySecureField(placeHolder: "Şifreniz", text: $password)
+                    
+                    Toggle(isOn: $rememberMe) {
+                        HStack {
+                            Spacer()
+                            Text("Beni Hatırla")
+                                .foregroundColor(.white)
+                        }
+                    }
+                    .onReceive([self.rememberMe].publisher ){ value in
+                        UserDefaults.standard.set(value, forKey: "rememberMe")
+                        if  !value {
+                            UserDefaults.standard.set(nil, forKey: "savedEmail")
+                        }
+                    }
+                    .padding(.top, 24)
                     
                     Button(action: {
                         //: login and navigation
@@ -46,7 +65,6 @@ struct SignInView: View {
                     }) {
                         MyButton(text: "Giriş")
                     }
-                    .padding(.top, 24)
                     .alert(isPresented: $showAlert, content: {
                         self.alert!
                     })
@@ -68,7 +86,6 @@ struct SignInView: View {
                                 self.showSignInView = false
                             }
                         }
-                    //: navigation
                 }
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
@@ -108,11 +125,15 @@ struct SignInView: View {
     }
     
     func verificate() {
+        let email = self.email.trimmingCharacters(in: .whitespaces) //remove pre and post spaces
         var message = ""
         
         if let user = Auth.auth().currentUser {
             if user.isEmailVerified {
                 UserDefaults.standard.set(true, forKey: "isLoggedIn")
+                if self.rememberMe {
+                    UserDefaults.standard.set(email, forKey: "savedEmail")
+                }
                 withAnimation(){self.current.isLoggedIn = true}
             }
             else {

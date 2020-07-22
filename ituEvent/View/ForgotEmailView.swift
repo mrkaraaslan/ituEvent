@@ -27,6 +27,8 @@ struct ForgotEmailView: View {
             
             VStack {
                 MyTextField(placeHolder: "Email", text: $email, overlay: true)
+                    .keyboardType(.emailAddress)
+                    .autocapitalization(.none)
                 
                 Button(action: {
                     //: send reset password mail

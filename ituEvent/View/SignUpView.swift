@@ -28,6 +28,8 @@ struct SignUpView: View {
             VStack {
                 VStack {
                     MyTextField(placeHolder: "İTÜ mailiniz", text: $email, overlay: false)
+                        .keyboardType(.emailAddress)
+                        .autocapitalization(.none)
                     MySecureField(placeHolder: "Şifreniz", text: $password)
                     MySecureField(placeHolder: "Şifre Tekrarı", text: $passCheck)
                     
