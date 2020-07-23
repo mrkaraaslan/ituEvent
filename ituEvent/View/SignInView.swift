@@ -134,6 +134,8 @@ struct SignInView: View {
                 if self.rememberMe {
                     UserDefaults.standard.set(email, forKey: "savedEmail")
                 }
+                self.current.user.id = user.uid
+                self.current.user.email = email
                 withAnimation(){self.current.isLoggedIn = true}
             }
             else {

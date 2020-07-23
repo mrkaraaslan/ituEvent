@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -19,6 +19,7 @@
 		AA25142B24C11E13006F4D6F /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25142A24C11E13006F4D6F /* AppView.swift */; };
 		AA25142D24C122EE006F4D6F /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25142C24C122EE006F4D6F /* ImagePickerView.swift */; };
 		AA25142F24C124C2006F4D6F /* MyImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25142E24C124C2006F4D6F /* MyImage.swift */; };
+		AA5DCC2824CA201D00A216CA /* MyTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5DCC2724CA201D00A216CA /* MyTextView.swift */; };
 		AA725F2124C0913100927A1B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA725F2024C0913100927A1B /* AppDelegate.swift */; };
 		AA725F2324C0913100927A1B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA725F2224C0913100927A1B /* SceneDelegate.swift */; };
 		AA725F2524C0913100927A1B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA725F2424C0913100927A1B /* ContentView.swift */; };
@@ -29,9 +30,12 @@
 		AAAC3C4B24C3682800F900EE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AAAC3C4A24C3682800F900EE /* GoogleService-Info.plist */; };
 		AABF92ED24C211560073C661 /* SearchEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABF92EC24C211560073C661 /* SearchEventView.swift */; };
 		AABF92EF24C22ABF0073C661 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABF92EE24C22ABF0073C661 /* SettingsView.swift */; };
+		AACC057224C8D9D100860709 /* UserEventsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACC057124C8D9D100860709 /* UserEventsView.swift */; };
+		AACC057424C8F16A00860709 /* MyNavigationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACC057324C8F16A00860709 /* MyNavigationButton.swift */; };
 		AADC0A5624C1B87C0042CDA0 /* SignView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADC0A5524C1B87C0042CDA0 /* SignView.swift */; };
 		AADC0A5924C1B9630042CDA0 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADC0A5824C1B9630042CDA0 /* User.swift */; };
 		AADC0A5B24C1C5660042CDA0 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADC0A5A24C1C5660042CDA0 /* Event.swift */; };
+		AAF2832F24C99EDC0045A192 /* CreateEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF2832E24C99EDC0045A192 /* CreateEventView.swift */; };
 		E55FA6AFDAE83844BD60617E /* Pods_ituEvent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BB390180CDFD3B4D3E1440D /* Pods_ituEvent.framework */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +54,7 @@
 		AA25142A24C11E13006F4D6F /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		AA25142C24C122EE006F4D6F /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		AA25142E24C124C2006F4D6F /* MyImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyImage.swift; sourceTree = "<group>"; };
+		AA5DCC2724CA201D00A216CA /* MyTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTextView.swift; sourceTree = "<group>"; };
 		AA725F1D24C0913100927A1B /* ituEvent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ituEvent.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA725F2024C0913100927A1B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AA725F2224C0913100927A1B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -62,9 +67,12 @@
 		AAAC3C4A24C3682800F900EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		AABF92EC24C211560073C661 /* SearchEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEventView.swift; sourceTree = "<group>"; };
 		AABF92EE24C22ABF0073C661 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		AACC057124C8D9D100860709 /* UserEventsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEventsView.swift; sourceTree = "<group>"; };
+		AACC057324C8F16A00860709 /* MyNavigationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNavigationButton.swift; sourceTree = "<group>"; };
 		AADC0A5524C1B87C0042CDA0 /* SignView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignView.swift; sourceTree = "<group>"; };
 		AADC0A5824C1B9630042CDA0 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		AADC0A5A24C1C5660042CDA0 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		AAF2832E24C99EDC0045A192 /* CreateEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEventView.swift; sourceTree = "<group>"; };
 		AD6145AFA50724DC06167A69 /* Pods-ituEvent.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ituEvent.debug.xcconfig"; path = "Target Support Files/Pods-ituEvent/Pods-ituEvent.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -86,7 +94,6 @@
 				AD6145AFA50724DC06167A69 /* Pods-ituEvent.debug.xcconfig */,
 				A826BD8A16E82748B3D9F38D /* Pods-ituEvent.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -145,6 +152,8 @@
 				AABF92EC24C211560073C661 /* SearchEventView.swift */,
 				AA25142824C11DF7006F4D6F /* EventsView.swift */,
 				AA25142624C11DBC006F4D6F /* ProfileView.swift */,
+				AACC057124C8D9D100860709 /* UserEventsView.swift */,
+				AAF2832E24C99EDC0045A192 /* CreateEventView.swift */,
 				AABF92EE24C22ABF0073C661 /* SettingsView.swift */,
 				AA25142C24C122EE006F4D6F /* ImagePickerView.swift */,
 			);
@@ -156,8 +165,10 @@
 			children = (
 				AA25141C24C0FBFD006F4D6F /* MyTextField.swift */,
 				AA25142024C10A3B006F4D6F /* MySecureField.swift */,
+				AA5DCC2724CA201D00A216CA /* MyTextView.swift */,
 				AAAC3C4824C3639000F900EE /* MyText.swift */,
 				AA25142424C11A3F006F4D6F /* MyButton.swift */,
+				AACC057324C8F16A00860709 /* MyNavigationButton.swift */,
 				AA25142E24C124C2006F4D6F /* MyImage.swift */,
 				AA25141A24C0F1D1006F4D6F /* MyExtensions.swift */,
 			);
@@ -297,14 +308,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AACC057424C8F16A00860709 /* MyNavigationButton.swift in Sources */,
 				AAAC3C4924C3639000F900EE /* MyText.swift in Sources */,
 				AA25142B24C11E13006F4D6F /* AppView.swift in Sources */,
 				AA725F2124C0913100927A1B /* AppDelegate.swift in Sources */,
+				AA5DCC2824CA201D00A216CA /* MyTextView.swift in Sources */,
 				AA725F2324C0913100927A1B /* SceneDelegate.swift in Sources */,
 				AA25141B24C0F1D1006F4D6F /* MyExtensions.swift in Sources */,
 				AA25142D24C122EE006F4D6F /* ImagePickerView.swift in Sources */,
 				AABF92EF24C22ABF0073C661 /* SettingsView.swift in Sources */,
 				AA25141F24C104F1006F4D6F /* SignUpView.swift in Sources */,
+				AAF2832F24C99EDC0045A192 /* CreateEventView.swift in Sources */,
 				AA25141D24C0FBFD006F4D6F /* MyTextField.swift in Sources */,
 				AADC0A5924C1B9630042CDA0 /* User.swift in Sources */,
 				AA25142F24C124C2006F4D6F /* MyImage.swift in Sources */,
@@ -314,6 +328,7 @@
 				AA25142324C10C0D006F4D6F /* ForgotEmailView.swift in Sources */,
 				AA25142524C11A3F006F4D6F /* MyButton.swift in Sources */,
 				AA725F2524C0913100927A1B /* ContentView.swift in Sources */,
+				AACC057224C8D9D100860709 /* UserEventsView.swift in Sources */,
 				AA25142724C11DBC006F4D6F /* ProfileView.swift in Sources */,
 				AADC0A5624C1B87C0042CDA0 /* SignView.swift in Sources */,
 				AA25142124C10A3B006F4D6F /* MySecureField.swift in Sources */,

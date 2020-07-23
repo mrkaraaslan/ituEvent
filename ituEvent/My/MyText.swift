@@ -10,17 +10,17 @@ import SwiftUI
 
 struct MyText: View {
     
-    var info: String
-    var text: String
+    var info: String?
+    var text: String?
     
     var body: some View {
         VStack {
-            Text(info)
+            Text((self.info != nil) ? info! : "")
                 .font(.system(size: 12))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .foregroundColor(.gray)
             VStack(spacing: 0) {
-                Text(text)
+                Text((self.text != nil) ? text! : "")
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.leading)
                 Rectangle()

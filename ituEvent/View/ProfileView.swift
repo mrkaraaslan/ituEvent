@@ -78,12 +78,14 @@ struct ProfileView: View {
                 }.padding(.top)
                 // user image ends
                 
-                
                 VStack(spacing: 16) {
                     MyText(info: "İsim", text: current.user.name)
                     MyText(info: "Email", text: current.user.email)
                     MyText(info: "Bölüm", text: current.user.department)
                     MyText(info: "Düzey", text: current.leveller())
+                    NavigationLink(destination: UserEventsView().environmentObject(current), label: {
+                        MyNavigationButton(text: "Etkinliklerim")
+                    })
                 }
                 .frame(maxHeight: .infinity, alignment: .top)
                 .padding(.top, 32)

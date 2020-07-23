@@ -13,6 +13,10 @@ struct EventAttendence {
     var attendence: Int // 0: declined | 1: accepted | else: not answered
 }
 
+class EventClass: ObservableObject {
+    @Published var event = Event()
+}
+
 struct Event {
     var id = UUID().uuidString
     var creator: String // creatorId
@@ -20,8 +24,20 @@ struct Event {
     var start: Date
     var finish: Date
     var talker: String
-    var maxParticipants: Int
+    var maxParticipants: String
     var price: String
     var location: String
     var description: String
+    
+    init() {
+        creator = ""
+        name = ""
+        start = Date()
+        finish = Date()
+        talker = ""
+        maxParticipants = ""
+        price = ""
+        location = ""
+        description = ""
+    }
 }
