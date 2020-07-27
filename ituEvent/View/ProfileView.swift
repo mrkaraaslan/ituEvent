@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import SwiftKeychainWrapper
 
 struct ProfileView: View {
     
@@ -81,6 +82,8 @@ struct ProfileView: View {
                 VStack(spacing: 16) {
                     MyText(info: "İsim", text: current.user.name)
                     MyText(info: "Email", text: current.user.email)
+                    MyText(info: "Bölüm", text: current.user.department)
+                    MyText(info: "Durum", text: current.leveller())
                     NavigationLink(destination: UserEventsView().environmentObject(current), label: {
                         MyNavigationButton(text: "Etkinliklerim")
                     })
@@ -98,7 +101,7 @@ struct ProfileView: View {
                     MyImage(imageName: "gear", imageColor: .mainColor)
                 }.sheet(isPresented: $showSettingSheet, onDismiss: {
                     if self.logout {
-                        UserDefaults.standard.set(false, forKey: "isLoggedIn")
+                        KeychainWrapper.standard.set(false, forKey: "isLoggedIn")
                         self.current.isLoggedIn = false
                     }
                 }, content: {

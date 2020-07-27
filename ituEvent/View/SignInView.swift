@@ -8,14 +8,15 @@
 
 import SwiftUI
 import Firebase
+import SwiftKeychainWrapper
 
 struct SignInView: View {
     
     @EnvironmentObject var current: UserClass
     @Binding var showSignInView: Bool
     
-    @State var email = UserDefaults.standard.string(forKey: "savedEmail") ?? ""
-    @State var password = ""
+    @State var email = KeychainWrapper.standard.string(forKey: "userEmail") ?? ""
+    @State var password = KeychainWrapper.standard.string(forKey: "userPassword") ?? ""
     
     @State var showForgotEmailSheet = false
     
@@ -51,7 +52,8 @@ struct SignInView: View {
                     .onReceive([self.rememberMe].publisher ){ value in
                         UserDefaults.standard.set(value, forKey: "rememberMe")
                         if  !value {
-                            UserDefaults.standard.set(nil, forKey: "savedEmail")
+                            KeychainWrapper.standard.set("", forKey: "userEmail")
+                            KeychainWrapper.standard.set("", forKey: "userPassword")
                         }
                     }
                     .padding(.top, 24)
@@ -130,7 +132,9 @@ struct SignInView: View {
         
         if let user = Auth.auth().currentUser {
             if user.isEmailVerified {
-                UserDefaults.standard.set(true, forKey: "isLoggedIn")
+                KeychainWrapper.standard.set(true, forKey: "isLoggedIn")
+                KeychainWrapper.standard.set(email, forKey: "userEmail")
+                KeychainWrapper.standard.set(self.password, forKey: "userPassword")
                 if self.rememberMe {
                     UserDefaults.standard.set(email, forKey: "savedEmail")
                 }

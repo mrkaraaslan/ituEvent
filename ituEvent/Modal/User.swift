@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Firebase
+import SwiftKeychainWrapper
 
 class UserClass: ObservableObject  {
     @Published var user: User
@@ -18,22 +19,18 @@ class UserClass: ObservableObject  {
     
     init() {
         self.user = User()
-        self.isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
+        self.isLoggedIn = false
         //self.cEvents = []
         //self.aEvents = []
     }
     
-    func info(){ //: get user info from firebase
+    func info() { //: get user info from firebase
         user.image = Image("p")
-        if Auth.auth().currentUser != nil { //user signed in
-            if let user = Auth.auth().currentUser {
-                self.user.name = user.displayName
-                self.user.department = user.value(forKey: "department") as? String
-                self.user.level = user.value(forKey: "level") as? Int
-            }
-        }
-        else { //signIn user
-            
+        if let user = Auth.auth().currentUser {
+            print("info")
+            self.user.name = user.displayName
+            self.user.department = user.value(forKey: "department") as? String ?? nil
+            self.user.level = user.value(forKey: "level") as? Int ?? nil
         }
     }
     
