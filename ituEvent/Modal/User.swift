@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 class UserClass: ObservableObject  {
     @Published var user: User
@@ -24,9 +25,16 @@ class UserClass: ObservableObject  {
     
     func info(){ //: get user info from firebase
         user.image = Image("p")
-        //user.name = "Mehmet Karaaslan"
-        user.email = "karaaslan18@itu.edu.tr"
-        user.department = "Computer Engineering"
+        if Auth.auth().currentUser != nil { //user signed in
+            if let user = Auth.auth().currentUser {
+                self.user.name = user.displayName
+                self.user.department = user.value(forKey: "department") as? String
+                self.user.level = user.value(forKey: "level") as? Int
+            }
+        }
+        else { //signIn user
+            
+        }
     }
     
     func leveller() -> String {

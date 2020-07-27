@@ -12,24 +12,47 @@ struct CreateEventView: View {
     
     @EnvironmentObject var current: UserClass
     @ObservedObject var new = EventClass()
+    @State var limited = false
     @State var withMoney = false
     
     var body: some View {
-        ScrollView {
+        VStack {
+            Form {
+                Section {
+                    MyTextField(placeHolder: "Etkinlik adı", text: $new.event.name, overlay: true)
+                    MyTextField(placeHolder: "Konuşmacı", text: $new.event.talker, overlay: true)
+                }
+                Section {
+                    DatePicker(selection: $new.event.start, in: Date()..., label: { Text("Başlangıç") })
+                    DatePicker(selection: $new.event.finish, in: new.event.start..., label: { Text("Bitiş") })
+                }
+                Section {
+                    Toggle("Sınırlı Katılım", isOn: $limited)
+                    if limited {
+                        MyTextField(placeHolder: "Katılımcı sınırı", text: $new.event.maxParticipants, overlay: true)
+                            .keyboardType(.numbersAndPunctuation)
+                    }
+                    Toggle("Ücretli Katılım", isOn: $withMoney)
+                    if withMoney {
+                        MyTextField(placeHolder: "Katılım ücreti", text: $new.event.price, overlay: true)
+                            .keyboardType(.numbersAndPunctuation)
+                    }
+                }
+                Section {
+                    MyTextField(placeHolder: "Adress", text: $new.event.location, overlay: true)
+                }
+                Section {
+                    // multiline text field
+                    MyTextView(text: $new.event.description, placeholder: "Açıklama", height: 200)
+                }
+            }
             VStack {
-                MyTextField(placeHolder: "Etkinlik adı", text: $new.event.name, overlay: true)
-                MyTextField(placeHolder: "Konuşmacı", text: $new.event.talker, overlay: true)
-                MyTextField(placeHolder: "Katılımcı sınırı", text: $new.event.maxParticipants, overlay: true)
-                Toggle(isOn: $withMoney) {
-                    Text("Ücretli Katılım")
+                Button(action: {
+                    //: firebase actions
+                }) {
+                    MyButton(text: "Etkinlik Oluştur", color: .mainColor)
                 }
-                if withMoney {
-                    MyTextField(placeHolder: "Katılım ücreti", text: $new.event.price, overlay: true)
-                }
-                MyTextField(placeHolder: "Adress", text: $new.event.location, overlay: true)
-                // multiline text field
-                MyTextView(text: $new.event.description, placeholder: "Açıklama", height: 200)
-            }.padding([.top, .leading, .trailing])
+            }.padding()
         }.navigationBarTitle("Etkinlik Oluştur", displayMode: .inline)
     }
 }
@@ -39,18 +62,3 @@ struct CreateEventView_Previews: PreviewProvider {
         CreateEventView().environmentObject(UserClass())
     }
 }
-
-/*
-struct Event {
-    var id = UUID().uuidString
-    var creator: String // creatorId
-    var name: String
-    var start: Date
-    var finish: Date
-    var talker: String
-    var maxParticipants: Int
-    var price: String
-    var location: String
-    var description: String
-}
- */

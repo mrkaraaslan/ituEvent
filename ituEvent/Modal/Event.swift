@@ -13,7 +13,7 @@ struct EventAttendence {
     var attendence: Int // 0: declined | 1: accepted | else: not answered
 }
 
-class EventClass: ObservableObject {
+class EventClass: ObservableObject { //will use o create new events
     @Published var event = Event()
 }
 
@@ -21,7 +21,13 @@ struct Event {
     var id = UUID().uuidString
     var creator: String // creatorId
     var name: String
-    var start: Date
+    var start: Date {
+        willSet { //newValue
+            if newValue > finish {
+                finish = newValue
+            }
+        }
+    }
     var finish: Date
     var talker: String
     var maxParticipants: String

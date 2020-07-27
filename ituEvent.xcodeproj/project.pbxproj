@@ -152,9 +152,9 @@
 				AABF92EC24C211560073C661 /* SearchEventView.swift */,
 				AA25142824C11DF7006F4D6F /* EventsView.swift */,
 				AA25142624C11DBC006F4D6F /* ProfileView.swift */,
+				AABF92EE24C22ABF0073C661 /* SettingsView.swift */,
 				AACC057124C8D9D100860709 /* UserEventsView.swift */,
 				AAF2832E24C99EDC0045A192 /* CreateEventView.swift */,
-				AABF92EE24C22ABF0073C661 /* SettingsView.swift */,
 				AA25142C24C122EE006F4D6F /* ImagePickerView.swift */,
 			);
 			path = View;
