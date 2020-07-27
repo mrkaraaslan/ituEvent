@@ -165,7 +165,7 @@ struct EditProfile: View {
             "name" : self.name,
             "department" : self.department,
             "level" : self.level
-        ]){ error in
+        ], merge: true){ error in
             if let err = error {
                 let message = err.localizedDescription
                 self.alert = Alert(

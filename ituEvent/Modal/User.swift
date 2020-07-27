@@ -63,14 +63,9 @@ class UserClass: ObservableObject  {
 struct User {
     var image: Image?
     var name: String?
-    var email: String
+    var email: String = ""
     var department: String?
     var level: Int?
-    var cEvents: [String]? // list of created  events' ids
-    var aEvents: [String]? // list of event attendences' ids
-    
-    init() {
-        //other properties will be nil so no need to write them
-        email = ""
-    }
+    var cEvents: [String] = [] // list of created  events' ids
+    var aEvents: [String] = [] // list of event attendences' ids
 }

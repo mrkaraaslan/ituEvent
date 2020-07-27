@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct CreateEventView: View {
     
@@ -14,6 +15,11 @@ struct CreateEventView: View {
     @ObservedObject var new = EventClass()
     @State var limited = false
     @State var withMoney = false
+    
+    @State var alert: Alert? = nil
+    @State var showAlert = false
+
+    let db = Firestore.firestore()
     
     var body: some View {
         VStack {
@@ -48,12 +54,58 @@ struct CreateEventView: View {
             }
             VStack {
                 Button(action: {
-                    //: firebase actions
+                    //: control before save
+                    self.saveEvent()
                 }) {
                     MyButton(text: "Etkinlik Oluştur", color: .mainColor)
                 }
             }.padding()
-        }.navigationBarTitle("Etkinlik Oluştur", displayMode: .inline)
+        }
+        .navigationBarTitle("Etkinlik Oluştur", displayMode: .inline)
+        .alert(isPresented: $showAlert, content: {
+            self.alert!
+        })
+    }
+    func saveEvent() {
+        func toUser() {
+            db.collection("Users").document(self.current.user.email).setData([
+                "cEvents" : self.current.user.cEvents as Any
+            ], merge: true){ error in
+                if let err = error {
+                    let message = err.localizedDescription
+                    self.alert = Alert(title: Text("HATA"), message: Text(message), primaryButton: .default(Text("Tekrar dene"), action: {toUser()}), secondaryButton: .cancel(Text("Vazgeç")))
+                    self.showAlert = true
+                }
+                else {
+                    toEvents()
+                }
+            }
+        }
+        func toEvents() {
+            db.collection("Events").document(event.id).setData([
+                "creator" : self.current.user.email,
+                "name" : event.name,
+                "talker" : event.talker,
+                "start" : event.start,
+                "finish" : event.finish,
+                "maxParticipants" : Int(event.maxParticipants) ?? "NO",
+                "price" : Int(event.price) ?? "NO",
+                "location" : event.location,
+                "description" : event.description
+            ]){ error in
+                if let err = error {
+                    let message = err.localizedDescription
+                    self.alert = Alert(title: Text("HATA"), message: Text(message), primaryButton: .default(Text("Tekrar dene"), action: {toEvents()}), secondaryButton: .cancel(Text("Vazgeç")))
+                }
+                else {
+                    self.alert = Alert(title: Text("Etkinlik oluşturuldu"), dismissButton: .cancel(Text("Tamam")))
+                }
+                self.showAlert = true
+            }
+        }
+        let event = self.new.event
+        self.current.user.cEvents.append(event.id)
+        toUser()
     }
 }
 

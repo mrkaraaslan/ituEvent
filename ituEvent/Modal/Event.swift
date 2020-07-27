@@ -19,7 +19,7 @@ class EventClass: ObservableObject { //will use o create new events
 
 struct Event {
     var id = UUID().uuidString
-    var creator: String // creatorId
+    var creator: String // creator email
     var name: String
     var start: Date {
         willSet { //newValue
@@ -30,8 +30,20 @@ struct Event {
     }
     var finish: Date
     var talker: String
-    var maxParticipants: String
-    var price: String
+    var maxParticipants: String {
+        didSet { //oldValue
+            if Int(maxParticipants) == nil && maxParticipants != "" {
+                maxParticipants = oldValue
+            }
+        }
+    }
+    var price: String {
+        didSet { //oldValue
+            if Int(price) == nil && price != "" {
+                price = oldValue
+            }
+        }
+    }
     var location: String
     var description: String
     
