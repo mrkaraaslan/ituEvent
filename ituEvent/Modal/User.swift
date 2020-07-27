@@ -8,7 +8,6 @@
 
 import SwiftUI
 import Firebase
-import SwiftKeychainWrapper
 
 class UserClass: ObservableObject  {
     @Published var user: User
@@ -25,12 +24,19 @@ class UserClass: ObservableObject  {
     }
     
     func info() { //: get user info from firebase
-        user.image = Image("p")
+        let db = Firestore.firestore()
         if let user = Auth.auth().currentUser {
-            print("info")
+            self.user.email = user.email!
             self.user.name = user.displayName
-            self.user.department = user.value(forKey: "department") as? String ?? nil
-            self.user.level = user.value(forKey: "level") as? Int ?? nil
+            db.collection("Users").document(self.user.email).getDocument { (Document, Error) in
+                if let doc = Document {
+                    if let data = doc.data() {
+                        self.user.name = data["name"] as? String
+                        self.user.department = data["department"] as? String
+                        self.user.level = data["level"] as? Int
+                    }
+                }
+            }
         }
     }
     
@@ -55,7 +61,6 @@ class UserClass: ObservableObject  {
 }
 
 struct User {
-    var id: String?
     var image: Image?
     var name: String?
     var email: String

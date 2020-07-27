@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Firebase
 import SwiftKeychainWrapper
 
 struct ProfileView: View {
@@ -19,6 +20,8 @@ struct ProfileView: View {
     
     @State var showSettingSheet = false
     @State var logout = false
+    
+    @State var editProfile = false
     
     var body: some View {
         NavigationView {
@@ -79,14 +82,26 @@ struct ProfileView: View {
                 }.padding(.top)
                 // user image ends
                 
-                VStack(spacing: 16) {
-                    MyText(info: "İsim", text: current.user.name)
-                    MyText(info: "Email", text: current.user.email)
-                    MyText(info: "Bölüm", text: current.user.department)
-                    MyText(info: "Durum", text: current.leveller())
-                    NavigationLink(destination: UserEventsView().environmentObject(current), label: {
-                        MyNavigationButton(text: "Etkinliklerim")
-                    })
+                VStack {
+                    VStack {
+                        Button(action: {
+                            withAnimation(){
+                                self.editProfile.toggle()
+                            }
+                        }) {
+                            Text(editProfile ? "Vazgeç" : "Düzenle")
+                        }
+                    }.frame(maxWidth: .infinity, alignment: .trailing)
+                    if editProfile {
+                        EditProfile(editProfile: self.$editProfile, name: self.current.user.name ?? "", department: self.current.user.department ?? "", level: self.current.user.level ?? 0)
+                            .environmentObject(current)
+                            .transition(.scale)
+                            
+                    } else {
+                        ShowProfile()
+                            .environmentObject(current)
+                            .transition(.scale)
+                    }
                 }
                 .frame(maxHeight: .infinity, alignment: .top)
                 .padding(.top, 32)
@@ -108,6 +123,89 @@ struct ProfileView: View {
                     SettingsView(logout: self.$logout)
                 })
             )
+        }
+    }
+}
+
+struct EditProfile: View {
+    
+    @EnvironmentObject var current: UserClass
+    @Binding var editProfile: Bool
+    
+    @State var name = ""
+    @State var department = ""
+    @State var level = 0
+    
+    @State var alert: Alert? = nil
+    @State var showAlert = false
+    
+    let db = Firestore.firestore()
+    
+    var body: some View {
+        VStack {
+            MyTextField(placeHolder: "İsminiz", text: $name, overlay: true)
+            MyTextField(placeHolder: "Bölümünüz", text: $department, overlay: true)
+            Picker("", selection: $level, content: {
+                Text("Lisans").tag(0)
+                Text("Yüksek Lisans").tag(1)
+                Text("Mezun").tag(2)
+                Text("Akademisyen").tag(3)
+            }).pickerStyle(SegmentedPickerStyle())
+            Button(action: {
+                self.save()
+            }) {
+                MyButton(text: "Kaydet", color: .mainColor)
+            }.padding(.top)
+        }.alert(isPresented: $showAlert, content: {
+            alert!
+        })
+    }
+    func save() {
+        self.db.collection("Users").document(self.current.user.email).setData([
+            "name" : self.name,
+            "department" : self.department,
+            "level" : self.level
+        ]){ error in
+            if let err = error {
+                let message = err.localizedDescription
+                self.alert = Alert(
+                    title: Text("HATA"), message: Text(message),
+                    primaryButton: .default(Text("Tekrar dene"), action: {
+                        self.save() //recursive call to try again
+                    }),
+                    secondaryButton: .cancel(Text("Vazgeç"))
+                )
+            } else {
+                self.current.user.name = self.name
+                self.current.user.department = self.department
+                self.current.user.level = self.level
+                self.alert = Alert(
+                    title: Text("Kaydedildi"), message: nil,
+                    dismissButton: .cancel(Text("Tamam"), action: {
+                        withAnimation() {
+                            self.editProfile.toggle()
+                        }
+                    })
+                )
+            }
+            self.showAlert = true
+        }
+    }
+}
+
+struct ShowProfile: View {
+    
+    @EnvironmentObject var current: UserClass
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            MyText(info: "İsim", text: current.user.name)
+            MyText(info: "Email", text: current.user.email)
+            MyText(info: "Bölüm", text: current.user.department)
+            MyText(info: "Eğitim durumu", text: current.leveller())
+            NavigationLink(destination: UserEventsView().environmentObject(current), label: {
+                MyNavigationButton(text: "Etkinliklerim")
+            })
         }
     }
 }
