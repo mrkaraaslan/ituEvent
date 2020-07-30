@@ -36,6 +36,7 @@
 		AADC0A5924C1B9630042CDA0 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADC0A5824C1B9630042CDA0 /* User.swift */; };
 		AADC0A5B24C1C5660042CDA0 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADC0A5A24C1C5660042CDA0 /* Event.swift */; };
 		AAF2832F24C99EDC0045A192 /* CreateEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF2832E24C99EDC0045A192 /* CreateEventView.swift */; };
+		AAF637C724D33374001351AE /* EventDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF637C624D33374001351AE /* EventDetailsView.swift */; };
 		E55FA6AFDAE83844BD60617E /* Pods_ituEvent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BB390180CDFD3B4D3E1440D /* Pods_ituEvent.framework */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +74,7 @@
 		AADC0A5824C1B9630042CDA0 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		AADC0A5A24C1C5660042CDA0 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		AAF2832E24C99EDC0045A192 /* CreateEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEventView.swift; sourceTree = "<group>"; };
+		AAF637C624D33374001351AE /* EventDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsView.swift; sourceTree = "<group>"; };
 		AD6145AFA50724DC06167A69 /* Pods-ituEvent.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ituEvent.debug.xcconfig"; path = "Target Support Files/Pods-ituEvent/Pods-ituEvent.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -154,6 +156,7 @@
 				AA25142624C11DBC006F4D6F /* ProfileView.swift */,
 				AABF92EE24C22ABF0073C661 /* SettingsView.swift */,
 				AACC057124C8D9D100860709 /* UserEventsView.swift */,
+				AAF637C624D33374001351AE /* EventDetailsView.swift */,
 				AAF2832E24C99EDC0045A192 /* CreateEventView.swift */,
 				AA25142C24C122EE006F4D6F /* ImagePickerView.swift */,
 			);
@@ -332,6 +335,7 @@
 				AA25142724C11DBC006F4D6F /* ProfileView.swift in Sources */,
 				AADC0A5624C1B87C0042CDA0 /* SignView.swift in Sources */,
 				AA25142124C10A3B006F4D6F /* MySecureField.swift in Sources */,
+				AAF637C724D33374001351AE /* EventDetailsView.swift in Sources */,
 				AA25142924C11DF7006F4D6F /* EventsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

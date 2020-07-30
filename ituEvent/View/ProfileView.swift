@@ -196,16 +196,21 @@ struct EditProfile: View {
 struct ShowProfile: View {
     
     @EnvironmentObject var current: UserClass
+    @State var navigate = false
     
     var body: some View {
         VStack(spacing: 16) {
             MyText(info: "İsim", text: current.user.name)
             MyText(info: "Email", text: current.user.email)
             MyText(info: "Bölüm", text: current.user.department)
-            MyText(info: "Eğitim durumu", text: current.leveller())
-            NavigationLink(destination: UserEventsView().environmentObject(current), label: {
+            MyText(info: "Eğitim durumu", text: current.user.leveller())
+            Button(action: {
+                self.current.getCreatedEvents()
+                self.navigate = true
+            }) {
                 MyNavigationButton(text: "Etkinliklerim")
-            })
+            }
+            NavigationLink(destination: UserEventsView().environmentObject(current), isActive: $navigate, label: {EmptyView()})
         }
     }
 }

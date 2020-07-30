@@ -12,14 +12,14 @@ import Firebase
 class UserClass: ObservableObject  {
     @Published var user: User
     @Published var isLoggedIn: Bool
-    //var cEvents: [Event] // list of created events
+    @Published var cEvents: [Event] // list of created events
     //var aEvents: [EventAttendence] //list of event attendences
     
     
     init() {
         self.user = User()
         self.isLoggedIn = false
-        //self.cEvents = []
+        self.cEvents = []
         //self.aEvents = []
     }
     
@@ -34,15 +34,43 @@ class UserClass: ObservableObject  {
                         self.user.name = data["name"] as? String
                         self.user.department = data["department"] as? String
                         self.user.level = data["level"] as? Int
+                        self.user.cEvents = data["cEvents"] as?  [String] ?? []
                     }
                 }
             }
-        }
+        }//: what if else?
     }
+    
+    func getCreatedEvents(){
+        let db = Firestore.firestore()
+        if Auth.auth().currentUser != nil {
+            cEvents = []
+            for id in self.user.cEvents {
+                db.collection("Events").document(id).getDocument { (Document, Error) in
+                    if let doc = Document {
+                        if let d = doc.data() {
+                            let e = Event(id, d["name"] as! String, (d["start"] as! Timestamp).dateValue(), (d["finish"] as! Timestamp).dateValue(), d["talker"] as! String, String(d["maxParticipants"] as! Int), String(d["price"] as! Int), d["location"] as! String, d["description"] as! String)
+                            self.cEvents.append(e) //: sort by event name or date?
+                        }
+                    }
+                }
+            }
+        }//: what if else
+    }
+}
+
+struct User {
+    var image: Image?
+    var name: String?
+    var email: String = ""
+    var department: String?
+    var level: Int?
+    var cEvents: [String] = [] // list of created  events' ids
+    var aEvents: [String] = [] // list of event attendences' ids
     
     func leveller() -> String {
         var text = ""
-        if let level = user.level {
+        if let level = self.level {
             switch level {
                 case 0:
                     text = "Lisans"
@@ -58,14 +86,4 @@ class UserClass: ObservableObject  {
         }
         return text
     }
-}
-
-struct User {
-    var image: Image?
-    var name: String?
-    var email: String = ""
-    var department: String?
-    var level: Int?
-    var cEvents: [String] = [] // list of created  events' ids
-    var aEvents: [String] = [] // list of event attendences' ids
 }

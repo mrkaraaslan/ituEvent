@@ -58,4 +58,17 @@ struct Event {
         location = ""
         description = ""
     }
+    
+    init(_ id: String,_ name: String, _ start: Date, _ finish: Date, _ talker: String, _ max: String, _ price: String, _ location: String, _ description: String) {
+        self.creator = ""
+        self.id = id
+        self.name = name
+        self.start = start
+        self.finish = finish
+        self.talker = talker
+        self.maxParticipants = max
+        self.price = price
+        self.location = location
+        self.description = description
+    }
 }

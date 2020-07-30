@@ -14,14 +14,27 @@ struct UserEventsView: View {
     
     var body: some View {
         VStack {
+            Form {
+                if self.current.cEvents.count != 0 {
+                    ForEach(current.cEvents, id: \.id) { event in
+                        VStack {
+                            NavigationLink(destination: EventDetailsView(event: event), label: {
+                                Text(event.name)
+                            })
+                        }
+                    }
+                }
+                else {
+                    Text("Etkinlik oluşturmadınız.")
+                }
+            }
             
-            //form to show created events
-            
-            NavigationLink(destination: CreateEventView().environmentObject(current), label: {
-                MyNavigationButton(text: "Etkinlik Oluştur")
-            })
+            VStack {
+                NavigationLink(destination: CreateEventView().environmentObject(current), label: {
+                    MyNavigationButton(text: "Etkinlik Oluştur")
+                })
+            }.padding()
         }
-        .padding([.leading, .trailing])
         .navigationBarTitle("Etkinliklerim", displayMode: .inline)
     }
 }
@@ -31,18 +44,3 @@ struct UserEventsView_Previews: PreviewProvider {
         UserEventsView().environmentObject(UserClass())
     }
 }
-
-/*
-struct Event {
-    var id = UUID().uuidString
-    var creator: String // creatorId
-    var name: String
-    var start: Date
-    var finish: Date
-    var talker: String
-    var maxParticipants: Int
-    var price: String
-    var location: String
-    var description: String
-}
- */

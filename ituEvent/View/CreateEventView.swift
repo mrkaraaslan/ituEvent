@@ -11,6 +11,7 @@ import Firebase
 
 struct CreateEventView: View {
     
+    @Environment(\.presentationMode) var view: Binding<PresentationMode> //to dismiss view
     @EnvironmentObject var current: UserClass
     @ObservedObject var new = EventClass()
     @State var limited = false
@@ -88,17 +89,19 @@ struct CreateEventView: View {
                 "talker" : event.talker,
                 "start" : event.start,
                 "finish" : event.finish,
-                "maxParticipants" : Int(event.maxParticipants) ?? "NO",
-                "price" : Int(event.price) ?? "NO",
+                "maxParticipants" : Int(event.maxParticipants) ?? 0,
+                "price" : Int(event.price) ?? 0,
                 "location" : event.location,
                 "description" : event.description
-            ]){ error in
+            ], merge: true){ error in
                 if let err = error {
                     let message = err.localizedDescription
                     self.alert = Alert(title: Text("HATA"), message: Text(message), primaryButton: .default(Text("Tekrar dene"), action: {toEvents()}), secondaryButton: .cancel(Text("Vazgeç")))
                 }
                 else {
-                    self.alert = Alert(title: Text("Etkinlik oluşturuldu"), dismissButton: .cancel(Text("Tamam")))
+                    self.alert = Alert(title: Text("Etkinlik oluşturuldu"), dismissButton: .cancel(Text("Tamam"), action: {
+                        self.view.wrappedValue.dismiss()
+                    }))
                 }
                 self.showAlert = true
             }
