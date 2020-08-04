@@ -14,10 +14,6 @@ struct ProfileView: View {
     
     @EnvironmentObject var current: UserClass
     
-    @State var showImageSheet = false
-    @State var showImagePicker = false
-    @State var useCamera = false
-    
     @State var showSettingSheet = false
     @State var logout = false
     
@@ -26,61 +22,7 @@ struct ProfileView: View {
     var body: some View {
         NavigationView {
             VStack {
-                ZStack(alignment: .bottomTrailing) {
-                    if(self.current.user.image != nil){
-                        self.current.user.image?
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 150, height: 150)
-                            .clipShape(Circle())
-                    }
-                    else {
-                        ZStack {
-                            Color.gray
-                                .frame(width: 150, height: 150)
-                            Image(systemName: "camera").imageScale(.large)
-                        }.clipShape(Circle())
-                    }
-                    
-                    Button(action: {
-                        self.showImageSheet = true
-                    }) {
-                        MyImage(imageName: "person.crop.circle.badge.plus")
-                            .background(Color.white)
-                            .clipShape(Circle())
-                            .actionSheet(isPresented: $showImageSheet){
-                                ActionSheet(
-                                    title: Text("İşleminizi Seçiniz"),
-                                    buttons: self.current.user.image == nil ? [
-                                        .default(Text("Fotoğraf Çek"), action: {
-                                            self.useCamera = true
-                                            self.showImagePicker = true
-                                        }),
-                                        .default(Text("Galeriden Seç"), action: {
-                                            self.useCamera = false
-                                            self.showImagePicker = true
-                                        }),
-                                        .cancel(Text("Vazgeç"))
-                                    ]:[
-                                        .default(Text("Fotoğraf Çek"), action: {
-                                            self.useCamera = true
-                                            self.showImagePicker = true
-                                        }),
-                                        .default(Text("Galeriden Seç"), action: {
-                                            self.useCamera = false
-                                            self.showImagePicker = true
-                                        }),
-                                        .destructive(Text("Fotoğrafı Kaldır"), action: {
-                                            self.current.user.image = nil
-                                        }),
-                                        .cancel(Text("Vazgeç"))
-                                ])
-                        }
-                    }.sheet(isPresented: $showImagePicker, content: {
-                        ImagePickerView(isShown: self.$showImagePicker, image: self.$current.user.image, useCamera: self.$useCamera)
-                    })
-                }.padding(.top)
-                // user image ends
+                UserImage().environmentObject(current)
                 
                 VStack {
                     VStack {
@@ -123,6 +65,113 @@ struct ProfileView: View {
                     SettingsView(logout: self.$logout)
                 })
             )
+        }
+    }
+}
+
+struct UserImage: View {
+    
+    @EnvironmentObject var current: UserClass
+    
+    @State var showImageSheet = false
+    @State var showImagePicker = false
+    @State var useCamera = false
+    
+    @State var alert: Alert? = nil
+    @State var showAlert = false
+    
+    @State var image: UIImage? = nil
+    
+    var body: some View {
+        ZStack(alignment: .bottomTrailing) {
+            if(self.current.user.image != nil){
+                self.current.user.image?
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 150, height: 150)
+                    .clipShape(Circle())
+            }
+            else {
+                ZStack {
+                    Color.gray
+                        .frame(width: 150, height: 150)
+                    Image(systemName: "camera").imageScale(.large)
+                }.clipShape(Circle())
+            }
+            
+            Button(action: {
+                self.showImageSheet = true
+            }) {
+                MyImage(imageName: "person.crop.circle.badge.plus")
+                    .background(Color.white)
+                    .clipShape(Circle())
+                    .actionSheet(isPresented: $showImageSheet){
+                        ActionSheet(
+                            title: Text("İşleminizi Seçiniz"),
+                            buttons: self.current.user.image == nil ? [
+                                .default(Text("Fotoğraf Çek"), action: {
+                                    self.useCamera = true
+                                    self.showImagePicker = true
+                                }),
+                                .default(Text("Galeriden Seç"), action: {
+                                    self.useCamera = false
+                                    self.showImagePicker = true
+                                }),
+                                .cancel(Text("Vazgeç"))
+                                ]:[
+                                    .default(Text("Fotoğraf Çek"), action: {
+                                        self.useCamera = true
+                                        self.showImagePicker = true
+                                    }),
+                                    .default(Text("Galeriden Seç"), action: {
+                                        self.useCamera = false
+                                        self.showImagePicker = true
+                                    }),
+                                    .destructive(Text("Fotoğrafı Kaldır"), action: {
+                                        self.current.user.image = nil
+                                    }),
+                                    .cancel(Text("Vazgeç"))
+                            ])
+                }
+            }.sheet(isPresented: $showImagePicker, onDismiss: {
+                if self.image != nil { //got image -> upload
+                    self.uploadUserImage()
+                }
+            }, content: {
+                ImagePickerView(isShown: self.$showImagePicker, image: self.$image, useCamera: self.useCamera)
+            })
+        }
+        .padding(.top)
+        .alert(isPresented: $showAlert, content: {
+            alert!
+        })
+        
+    }
+    
+    func uploadUserImage() {
+        let imgName =  self.current.user.email.dropLast(11) + ".jpg"
+        let ref = Storage.storage().reference(withPath: "UserImages/\(imgName)")
+        
+        guard let imgData = self.image!.jpegData(compressionQuality: 1) else {
+            self.alert = Alert(title: Text("Desteklemeyen fotoğraf biçimi"), message: nil, dismissButton: .cancel(Text("Tamam")))
+            self.showAlert = true
+            return
+        }
+        
+        let metaData = StorageMetadata()
+        metaData.contentType = "image/jpeg"
+        
+        ref.putData(imgData, metadata: metaData) { (StorageMetadata, Error) in
+            if let err = Error {
+                let message = err.localizedDescription
+                self.alert = Alert(title: Text("HATA"), message: Text(message),
+                                   primaryButton: .default(Text("Tekrar dene"), action: { self.uploadUserImage() }),
+                                   secondaryButton: .cancel(Text("Vazgeç")))
+                self.showAlert = true
+            }
+            else {
+                self.current.user.image = Image(uiImage: self.image!)
+            }
         }
     }
 }

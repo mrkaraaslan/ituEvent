@@ -38,6 +38,16 @@ class UserClass: ObservableObject  {
                     }
                 }
             }
+            
+            let imgName = self.user.email.dropLast(11) + ".jpg"
+            let ref = Storage.storage().reference(withPath: "UserImages/\(imgName)")
+            
+            ref.getData(maxSize: 4 * 1024 * 1024) { (Data, Error) in
+                if let data = Data {
+                    let image = UIImage(data: data)
+                    self.user.image = Image(uiImage: image!)
+                }
+            }
         }//: what if else?
     }
     

@@ -12,8 +12,8 @@ struct ImagePickerView {
 
     // MARK:  properties
     @Binding var isShown: Bool
-    @Binding var image: Image?
-    @Binding var useCamera: Bool
+    @Binding var image: UIImage?
+    var useCamera: Bool
 
     func makeCoordinator() -> Coordinator {
         return Coordinator(isShown: $isShown, image: $image)
@@ -42,9 +42,9 @@ extension ImagePickerView: UIViewControllerRepresentable {
 class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
     @Binding var isCoordinatorShown: Bool
-    @Binding var imageInCoordinator: Image?
+    @Binding var imageInCoordinator: UIImage?
 
-    init(isShown: Binding<Bool>, image: Binding<Image?>) {
+    init(isShown: Binding<Bool>, image: Binding<UIImage?>) {
         _isCoordinatorShown = isShown
         _imageInCoordinator = image
     }
@@ -52,7 +52,7 @@ class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerContro
     func imagePickerController(_ picker: UIImagePickerController,
     didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let unwrapImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else { return }
-        imageInCoordinator = Image(uiImage: unwrapImage)
+        imageInCoordinator = unwrapImage
         isCoordinatorShown = false
     }
 

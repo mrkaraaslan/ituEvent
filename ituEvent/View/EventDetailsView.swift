@@ -38,7 +38,7 @@ struct EventDetailsView: View {
                 }
             }.padding()
         }
-        
+        .navigationBarTitle(event.name)
     }
 }
 
