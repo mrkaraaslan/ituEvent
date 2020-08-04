@@ -59,7 +59,7 @@ class UserClass: ObservableObject  {
                 db.collection("Events").document(id).getDocument { (Document, Error) in
                     if let doc = Document {
                         if let d = doc.data() {
-                            let e = Event(id, d["name"] as! String, (d["start"] as! Timestamp).dateValue(), (d["finish"] as! Timestamp).dateValue(), d["talker"] as! String, String(d["maxParticipants"] as! Int), String(d["price"] as! Int), d["location"] as! String, d["description"] as! String)
+                            let e = Event(id, d["name"] as! String, (d["start"] as! Timestamp).dateValue(), (d["finish"] as! Timestamp).dateValue(), d["talker"] as! String, d["maxParticipants"] as! String, d["price"] as! String, d["location"] as! String, d["description"] as! String)
                             self.cEvents.append(e) //: sort by event name or date?
                         }
                     }

@@ -89,8 +89,8 @@ struct CreateEventView: View {
                 "talker" : event.talker,
                 "start" : event.start,
                 "finish" : event.finish,
-                "maxParticipants" : Int(event.maxParticipants) ?? 0,
-                "price" : Int(event.price) ?? 0,
+                "maxParticipants" : event.maxParticipants,
+                "price" : event.price,
                 "location" : event.location,
                 "description" : event.description
             ], merge: true){ error in
@@ -100,6 +100,7 @@ struct CreateEventView: View {
                 }
                 else {
                     self.alert = Alert(title: Text("Etkinlik oluşturuldu"), dismissButton: .cancel(Text("Tamam"), action: {
+                        self.current.cEvents.append(event)
                         self.view.wrappedValue.dismiss()
                     }))
                 }

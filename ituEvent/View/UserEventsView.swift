@@ -18,7 +18,7 @@ struct UserEventsView: View {
                 if self.current.cEvents.count != 0 {
                     ForEach(current.cEvents, id: \.id) { event in
                         VStack {
-                            NavigationLink(destination: EventDetailsView(event: event), label: {
+                            NavigationLink(destination: EventDetailsView(event: event).environmentObject(self.current), label: {
                                 Text(event.name)
                             })
                         }

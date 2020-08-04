@@ -128,7 +128,7 @@ struct UserImage: View {
                                         self.showImagePicker = true
                                     }),
                                     .destructive(Text("Fotoğrafı Kaldır"), action: {
-                                        self.current.user.image = nil
+                                        self.deleteUserImage()
                                     }),
                                     .cancel(Text("Vazgeç"))
                             ])
@@ -171,6 +171,24 @@ struct UserImage: View {
             }
             else {
                 self.current.user.image = Image(uiImage: self.image!)
+            }
+        }
+    }
+    
+    func deleteUserImage() {
+        let imgName = self.current.user.email.dropLast(11) + ".jpg"
+        let ref = Storage.storage().reference(withPath: "UserImages/\(imgName)")
+        
+        ref.delete { (Error) in
+            if let err = Error {
+                let message = err.localizedDescription
+                self.alert = Alert(title: Text("HATA"), message: Text(message),
+                                   primaryButton: .default(Text("Tekrar dene"), action: { self.uploadUserImage() }),
+                                   secondaryButton: .cancel(Text("Vazgeç")))
+                self.showAlert = true
+            }
+            else {
+                self.current.user.image = nil
             }
         }
     }
