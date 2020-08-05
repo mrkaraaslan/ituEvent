@@ -70,7 +70,7 @@ struct EventDetailsView: View {
                 self.current.user.cEvents.remove(at: idIndex!)
                 
                 db.collection("Users").document(self.current.user.email).updateData([
-                    "cEvents" : self.current.user.cEvents
+                    AnyHashable("cEvents") : FieldValue.arrayRemove([self.event.id])
                 ])
                 
                 self.view.wrappedValue.dismiss()
@@ -81,6 +81,6 @@ struct EventDetailsView: View {
 
 struct EventDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        EventDetailsView(event: Event())
+        EventDetailsView(event: Event()).environmentObject(UserClass())
     }
 }

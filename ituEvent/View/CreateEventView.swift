@@ -56,7 +56,13 @@ struct CreateEventView: View {
             VStack {
                 Button(action: {
                     //: control before save
-                    self.saveEvent()
+                    if isConnected() {
+                        self.saveEvent()
+                    }
+                    else {
+                        self.alert = Alert(title: Text("İnternet bağlantınızı kontrol ediniz"))
+                        self.showAlert = true
+                    }
                 }) {
                     MyButton(text: "Etkinlik Oluştur", color: .mainColor)
                 }
@@ -69,9 +75,9 @@ struct CreateEventView: View {
     }
     func saveEvent() {
         func toUser() {
-            db.collection("Users").document(self.current.user.email).setData([
-                "cEvents" : self.current.user.cEvents as Any
-            ], merge: true){ error in
+            db.collection("Users").document(self.current.user.email).updateData([
+                AnyHashable("cEvents") : FieldValue.arrayUnion([event.id])
+            ]){ error in
                 if let err = error {
                     let message = err.localizedDescription
                     self.alert = Alert(title: Text("HATA"), message: Text(message), primaryButton: .default(Text("Tekrar dene"), action: {toUser()}), secondaryButton: .cancel(Text("Vazgeç")))

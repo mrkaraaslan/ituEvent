@@ -34,7 +34,7 @@ class UserClass: ObservableObject  {
                         self.user.name = data["name"] as? String
                         self.user.department = data["department"] as? String
                         self.user.level = data["level"] as? Int
-                        self.user.cEvents = data["cEvents"] as?  [String] ?? []
+                        self.user.cEvents = data["cEvents"] as? [String] ?? []
                     }
                 }
             }
