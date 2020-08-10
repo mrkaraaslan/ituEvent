@@ -12,10 +12,9 @@ struct MyTextView: View {
     @Binding var text: String
     var placeholder: String = ""
     var height: Int
-    var editable: Bool = true
     
     var body: some View {
-        TextView(text: $text, placeholder: placeholder, editable: editable)
+        TextView(text: $text, placeholder: placeholder)
             .padding(.leading, 10)
             .frame(height: CGFloat(height))
             .overlay(
@@ -28,7 +27,6 @@ struct TextView: UIViewRepresentable {
     
     @Binding var text: String
     var placeholder: String
-    var editable: Bool
     
     func makeUIView(context: Context) -> UITextView {
         let view = UITextView()

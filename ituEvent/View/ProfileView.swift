@@ -152,7 +152,7 @@ struct UserImage: View {
         let imgName =  self.current.user.email.dropLast(11) + ".jpg"
         let ref = Storage.storage().reference(withPath: "UserImages/\(imgName)")
         
-        guard let imgData = self.image!.jpegData(compressionQuality: 1) else {
+        guard let imgData = self.image!.jpegData(compressionQuality: 0.75) else {
             self.alert = Alert(title: Text("Desteklemeyen fotoğraf biçimi"), message: nil, dismissButton: .cancel(Text("Tamam")))
             self.showAlert = true
             return
@@ -284,6 +284,9 @@ struct ShowProfile: View {
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileView().environmentObject(UserClass())
+        Group {
+            ProfileView().environmentObject(UserClass())
+            ProfileView(editProfile: true).environmentObject(UserClass())
+        }
     }
 }

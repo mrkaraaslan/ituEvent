@@ -11,14 +11,37 @@ import Firebase
 
 struct CreateEventView: View {
     
-    @Environment(\.presentationMode) var view: Binding<PresentationMode> //to dismiss view
     @EnvironmentObject var current: UserClass
     @ObservedObject var new = EventClass()
+    @State var addPhoto = false
+    
+    var body: some View {
+        VStack {
+            if addPhoto {
+                AddPhoto(eventId: new.event.id)
+                    .transition(.move(edge: .bottom))
+            }
+            else {
+                AddInfo(addPhoto: $addPhoto, new: new).environmentObject(current)
+                    .transition(.move(edge: .top))
+            }
+        }
+    }
+}
+
+struct AddInfo: View {
+    
+    @Environment(\.presentationMode) var view: Binding<PresentationMode>
+    @EnvironmentObject var current: UserClass
+    
     @State var limited = false
     @State var withMoney = false
     
     @State var alert: Alert? = nil
     @State var showAlert = false
+    
+    @Binding var addPhoto: Bool
+    @ObservedObject var new: EventClass
 
     let db = Firestore.firestore()
     
@@ -74,6 +97,9 @@ struct CreateEventView: View {
         })
     }
     func saveEvent() {
+        
+        let event = self.new.event
+        
         func toUser() {
             db.collection("Users").document(self.current.user.email).updateData([
                 AnyHashable("cEvents") : FieldValue.arrayUnion([event.id])
@@ -105,22 +131,149 @@ struct CreateEventView: View {
                     self.alert = Alert(title: Text("HATA"), message: Text(message), primaryButton: .default(Text("Tekrar dene"), action: {toEvents()}), secondaryButton: .cancel(Text("Vazgeç")))
                 }
                 else {
-                    self.alert = Alert(title: Text("Etkinlik oluşturuldu"), dismissButton: .cancel(Text("Tamam"), action: {
-                        self.current.cEvents.append(event)
+                    self.current.user.cEvents.append(event.id)
+                    self.current.cEvents.append(event)
+                    
+                    self.alert = Alert(title: Text("Etkinlik oluşturuldu"), primaryButton: .default(Text("Fotoğraf ekle"), action: {
+                        withAnimation() {
+                            self.addPhoto = true
+                        }
+                    }), secondaryButton: .cancel(Text("Vazgeç"), action: {
                         self.view.wrappedValue.dismiss()
                     }))
                 }
                 self.showAlert = true
             }
         }
-        let event = self.new.event
-        self.current.user.cEvents.append(event.id)
         toUser()
+    }
+}
+
+
+struct AddPhoto: View {
+    
+    @Environment(\.presentationMode) var view: Binding<PresentationMode>
+    var eventId: String
+    
+    @State var img: UIImage? = nil
+    @State var showImageSheet = false
+    @State var showImagePicker = false
+    @State var useCamera = false
+    
+    @State var alert: Alert? = nil
+    @State var showAlert = false
+    
+    var body: some View {
+        VStack {
+            ZStack(alignment: .bottom) {
+                VStack {
+                    if self.img != nil {
+                        Image(uiImage: self.img!)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: .infinity)
+                            .clipShape(RoundedRectangle(cornerRadius: 15))
+                    }
+                    else {
+                        ZStack {
+                            Color.gray
+                                .aspectRatio(contentMode: .fit)
+                                .clipShape(RoundedRectangle(cornerRadius: 15))
+                            Image(systemName: "photo.on.rectangle").imageScale(.large)
+                        }
+                    }
+                }
+                
+                HStack {
+                    if self.img != nil {
+                        Button(action: {
+                            self.img = nil
+                        }) {
+                            MyImage(imageName: "minus", imageColor: .red)
+                                .background(Color.white.cornerRadius(15))
+                        }
+                    }
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        self.showImageSheet = true
+                    }) {
+                        MyImage(imageName: "plus")
+                            .background(Color.white.cornerRadius(15))
+                    }
+                    .actionSheet(isPresented: $showImageSheet){
+                        ActionSheet(
+                            title: Text("İşleminizi Seçiniz"),
+                            buttons: [
+                            .default(Text("Fotoğraf Çek"), action: {
+                                self.useCamera = true
+                                self.showImagePicker = true
+                            }),
+                            .default(Text("Galeriden Seç"), action: {
+                                self.useCamera = false
+                                self.showImagePicker = true
+                            }),
+                            .cancel(Text("Vazgeç"))
+                        ])
+                    }
+                }
+            }
+            .frame(maxHeight: .infinity)
+            .sheet(isPresented: $showImagePicker, content: {
+                ImagePickerView(isShown: self.$showImagePicker, image: self.$img, useCamera: self.useCamera)
+            })
+            
+            VStack {
+                Button(action: {
+                    self.uploadPhoto()
+                }) {
+                    MyButton(text: "Fotoğrafı Yükle.", color: .mainColor)
+                }
+            }
+        }
+        .padding()
+        .alert(isPresented: $showAlert, content: {
+            alert!
+        })
+    }
+    func uploadPhoto() {
+        //: firebase upload event photo
+        let ref = Storage.storage().reference(withPath: "Events/\(self.eventId)/img.jpg")
+        
+        guard let imgData = self.img?.jpegData(compressionQuality: 0.75) else {
+            self.alert = Alert(title: Text("Desteklemeyen fotoğraf biçimi"), message: nil, dismissButton: .cancel(Text("Tamam")))
+            self.showAlert = true
+            return
+        }
+        
+        let metaData = StorageMetadata()
+        metaData.contentType = "image/jpeg"
+        
+        ref.putData(imgData, metadata: metaData) { (StorageMetadata, Error) in
+            if let err = Error {
+                let message = err.localizedDescription
+                self.alert = Alert(title: Text("HATA"), message: Text(message),
+                                   primaryButton: .default(Text("Tekrar dene"), action: { self.uploadPhoto() }),
+                                   secondaryButton: .cancel(Text("Vazgeç")))
+                self.showAlert = true
+            }
+            else {
+                self.alert = Alert(title: Text("Fotoğraf yüklendi"), message: nil, dismissButton: .cancel(Text("Tamam"), action: {
+                    self.view.wrappedValue.dismiss()
+                }))
+                self.showAlert = true
+            }
+        }
     }
 }
 
 struct CreateEventView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateEventView().environmentObject(UserClass())
+        Group {
+            CreateEventView().environmentObject(UserClass())
+            CreateEventView(addPhoto: true).environmentObject(UserClass())
+        }
     }
 }
+
