@@ -113,6 +113,9 @@ struct EventDetailsView: View {
                     AnyHashable("cEvents") : FieldValue.arrayRemove([self.event.id])
                 ])
                 
+                let ref = Storage.storage().reference(withPath: "Events/\(self.event.id)/img.jpg")
+                ref.delete()
+                
                 self.view.wrappedValue.dismiss()
             }
         }
@@ -128,12 +131,16 @@ struct EventDetailsView: View {
             
             if let data = Data {
                 let image = UIImage(data: data)
-                self.current.cEvents[eventIndex!].image = Image(uiImage: image!)
                 self.eventImage = Image(uiImage: image!)
+                if let i = eventIndex {
+                    self.current.cEvents[i].image = Image(uiImage: image!)
+                }
             }
             else {
-                self.current.cEvents[eventIndex!].image = Image("itüevent")
                 self.eventImage = Image("itüevent")
+                if let i = eventIndex {
+                    self.current.cEvents[i].image = Image("itüevent")
+                }
             }
         }
         
