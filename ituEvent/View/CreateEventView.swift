@@ -12,17 +12,17 @@ import Firebase
 struct CreateEventView: View {
     
     @EnvironmentObject var current: UserClass
-    @ObservedObject var new = EventClass()
+    @State var eventId = ""
     @State var addPhoto = false
     
     var body: some View {
         VStack {
             if addPhoto {
-                AddPhoto(eventId: new.event.id)
+                AddPhoto(eventId: eventId)
                     .transition(.move(edge: .bottom))
             }
             else {
-                AddInfo(addPhoto: $addPhoto, new: new).environmentObject(current)
+                AddInfo(addPhoto: $addPhoto, eventId: $eventId).environmentObject(current)
                     .transition(.move(edge: .top))
             }
         }
@@ -40,8 +40,9 @@ struct AddInfo: View {
     @State var alert: Alert? = nil
     @State var showAlert = false
     
+    @State var event = Event()
     @Binding var addPhoto: Bool
-    @ObservedObject var new: EventClass
+    @Binding var eventId: String
 
     let db = Firestore.firestore()
     
@@ -49,31 +50,31 @@ struct AddInfo: View {
         VStack {
             Form {
                 Section {
-                    MyTextField(placeHolder: "Etkinlik adı", text: $new.event.name, overlay: true)
-                    MyTextField(placeHolder: "Konuşmacı", text: $new.event.talker, overlay: true)
+                    MyTextField(placeHolder: "Etkinlik adı", text: $event.name, overlay: true)
+                    MyTextField(placeHolder: "Konuşmacı", text: $event.talker, overlay: true)
                 }
                 Section {
-                    DatePicker(selection: $new.event.start, in: Date()..., label: { Text("Başlangıç") })
-                    DatePicker(selection: $new.event.finish, in: new.event.start..., label: { Text("Bitiş") })
+                    DatePicker(selection: $event.start, in: Date()..., label: { Text("Başlangıç") })
+                    DatePicker(selection: $event.finish, in: event.start..., label: { Text("Bitiş") })
                 }
                 Section {
                     Toggle("Sınırlı Katılım", isOn: $limited)
                     if limited {
-                        MyTextField(placeHolder: "Katılımcı sınırı", text: $new.event.maxParticipants, overlay: true)
+                        MyTextField(placeHolder: "Katılımcı sınırı", text: $event.maxParticipants, overlay: true)
                             .keyboardType(.numbersAndPunctuation)
                     }
                     Toggle("Ücretli Katılım", isOn: $withMoney)
                     if withMoney {
-                        MyTextField(placeHolder: "Katılım ücreti", text: $new.event.price, overlay: true)
+                        MyTextField(placeHolder: "Katılım ücreti", text: $event.price, overlay: true)
                             .keyboardType(.numbersAndPunctuation)
                     }
                 }
                 Section {
-                    MyTextField(placeHolder: "Adress", text: $new.event.location, overlay: true)
+                    MyTextField(placeHolder: "Adress", text: $event.location, overlay: true)
                 }
                 Section {
                     // multiline text field
-                    MyTextView(text: $new.event.description, placeholder: "Açıklama", height: 200)
+                    MyTextView(text: $event.description, placeholder: "Açıklama", height: 200)
                 }
             }
             VStack {
@@ -98,7 +99,6 @@ struct AddInfo: View {
     }
     func saveEvent() {
         
-        let event = self.new.event
         
         func toUser() {
             db.collection("Users").document(self.current.user.email).updateData([
@@ -131,8 +131,9 @@ struct AddInfo: View {
                     self.alert = Alert(title: Text("HATA"), message: Text(message), primaryButton: .default(Text("Tekrar dene"), action: {toEvents()}), secondaryButton: .cancel(Text("Vazgeç")))
                 }
                 else {
-                    self.current.user.cEvents.append(event.id)
-                    self.current.cEvents.append(event)
+                    self.current.user.cEvents.append(self.event.id)
+                    self.current.cEvents.append(self.event)
+                    self.eventId = self.event.id
                     
                     self.alert = Alert(title: Text("Etkinlik oluşturuldu"), primaryButton: .default(Text("Fotoğraf ekle"), action: {
                         withAnimation() {
@@ -163,66 +164,72 @@ struct AddPhoto: View {
     @State var alert: Alert? = nil
     @State var showAlert = false
     
+    @State var uploadProgress = 0.0
+    
     var body: some View {
         VStack {
-            ZStack(alignment: .bottom) {
-                VStack {
-                    if self.img != nil {
-                        Image(uiImage: self.img!)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxWidth: .infinity)
-                            .clipShape(RoundedRectangle(cornerRadius: 15))
-                    }
-                    else {
-                        ZStack {
-                            Color.gray
+            VStack {
+                ZStack(alignment: .bottom) {
+                    VStack {
+                        if self.img != nil {
+                            Image(uiImage: self.img!)
+                                .resizable()
                                 .aspectRatio(contentMode: .fit)
+                                .frame(maxWidth: .infinity)
                                 .clipShape(RoundedRectangle(cornerRadius: 15))
-                            Image(systemName: "photo.on.rectangle").imageScale(.large)
+                        }
+                        else {
+                            ZStack {
+                                Color.gray
+                                    .aspectRatio(contentMode: .fit)
+                                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                                Image(systemName: "photo.on.rectangle").imageScale(.large)
+                            }
                         }
                     }
-                }
-                
-                HStack {
-                    if self.img != nil {
+                    
+                    HStack {
+                        if self.img != nil {
+                            Button(action: {
+                                self.img = nil
+                            }) {
+                                MyImage(imageName: "minus", imageColor: .red)
+                                    .background(Color.white.cornerRadius(15))
+                            }
+                        }
+                        
+                        Spacer()
+                        
                         Button(action: {
-                            self.img = nil
+                            self.showImageSheet = true
                         }) {
-                            MyImage(imageName: "minus", imageColor: .red)
+                            MyImage(imageName: "plus")
                                 .background(Color.white.cornerRadius(15))
                         }
-                    }
-                    
-                    Spacer()
-                    
-                    Button(action: {
-                        self.showImageSheet = true
-                    }) {
-                        MyImage(imageName: "plus")
-                            .background(Color.white.cornerRadius(15))
-                    }
-                    .actionSheet(isPresented: $showImageSheet){
-                        ActionSheet(
-                            title: Text("İşleminizi Seçiniz"),
-                            buttons: [
-                            .default(Text("Fotoğraf Çek"), action: {
-                                self.useCamera = true
-                                self.showImagePicker = true
-                            }),
-                            .default(Text("Galeriden Seç"), action: {
-                                self.useCamera = false
-                                self.showImagePicker = true
-                            }),
-                            .cancel(Text("Vazgeç"))
-                        ])
+                        .actionSheet(isPresented: $showImageSheet){
+                            ActionSheet(
+                                title: Text("İşleminizi Seçiniz"),
+                                buttons: [
+                                .default(Text("Fotoğraf Çek"), action: {
+                                    self.useCamera = true
+                                    self.showImagePicker = true
+                                }),
+                                .default(Text("Galeriden Seç"), action: {
+                                    self.useCamera = false
+                                    self.showImagePicker = true
+                                }),
+                                .cancel(Text("Vazgeç"))
+                            ])
+                        }
                     }
                 }
+                .frame(maxHeight: .infinity)
+                .sheet(isPresented: $showImagePicker, content: {
+                    ImagePickerView(isShown: self.$showImagePicker, image: self.$img, useCamera: self.useCamera)
+                })
+                
+                MyProgressBar(progress: $uploadProgress)
             }
-            .frame(maxHeight: .infinity)
-            .sheet(isPresented: $showImagePicker, content: {
-                ImagePickerView(isShown: self.$showImagePicker, image: self.$img, useCamera: self.useCamera)
-            })
             
             VStack {
                 Button(action: {
@@ -250,7 +257,7 @@ struct AddPhoto: View {
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpeg"
         
-        ref.putData(imgData, metadata: metaData) { (StorageMetadata, Error) in
+        let task = ref.putData(imgData, metadata: metaData) { (StorageMetadata, Error) in
             if let err = Error {
                 let message = err.localizedDescription
                 self.alert = Alert(title: Text("HATA"), message: Text(message),
@@ -264,6 +271,11 @@ struct AddPhoto: View {
                 }))
                 self.showAlert = true
             }
+        }
+        
+        task.observe(.progress) { (snapshot) in
+            guard let progress = snapshot.progress?.fractionCompleted else {return}
+            self.uploadProgress = progress
         }
     }
 }

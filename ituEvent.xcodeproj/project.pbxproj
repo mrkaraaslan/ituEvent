@@ -32,6 +32,7 @@
 		AABF92EF24C22ABF0073C661 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABF92EE24C22ABF0073C661 /* SettingsView.swift */; };
 		AACC057224C8D9D100860709 /* UserEventsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACC057124C8D9D100860709 /* UserEventsView.swift */; };
 		AACC057424C8F16A00860709 /* MyNavigationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACC057324C8F16A00860709 /* MyNavigationButton.swift */; };
+		AAD772D024E35168003A6F19 /* MyProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD772CF24E35168003A6F19 /* MyProgressBar.swift */; };
 		AADC0A5624C1B87C0042CDA0 /* SignView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADC0A5524C1B87C0042CDA0 /* SignView.swift */; };
 		AADC0A5924C1B9630042CDA0 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADC0A5824C1B9630042CDA0 /* User.swift */; };
 		AADC0A5B24C1C5660042CDA0 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADC0A5A24C1C5660042CDA0 /* Event.swift */; };
@@ -71,6 +72,7 @@
 		AABF92EE24C22ABF0073C661 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		AACC057124C8D9D100860709 /* UserEventsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEventsView.swift; sourceTree = "<group>"; };
 		AACC057324C8F16A00860709 /* MyNavigationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNavigationButton.swift; sourceTree = "<group>"; };
+		AAD772CF24E35168003A6F19 /* MyProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProgressBar.swift; sourceTree = "<group>"; };
 		AADC0A5524C1B87C0042CDA0 /* SignView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignView.swift; sourceTree = "<group>"; };
 		AADC0A5824C1B9630042CDA0 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		AADC0A5A24C1C5660042CDA0 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 				AA25142424C11A3F006F4D6F /* MyButton.swift */,
 				AACC057324C8F16A00860709 /* MyNavigationButton.swift */,
 				AA25142E24C124C2006F4D6F /* MyImage.swift */,
+				AAD772CF24E35168003A6F19 /* MyProgressBar.swift */,
 				AA25141A24C0F1D1006F4D6F /* MyExtensions.swift */,
 			);
 			path = My;
@@ -324,6 +327,7 @@
 				AA25142D24C122EE006F4D6F /* ImagePickerView.swift in Sources */,
 				AABF92EF24C22ABF0073C661 /* SettingsView.swift in Sources */,
 				AA25141F24C104F1006F4D6F /* SignUpView.swift in Sources */,
+				AAD772D024E35168003A6F19 /* MyProgressBar.swift in Sources */,
 				AAF2832F24C99EDC0045A192 /* CreateEventView.swift in Sources */,
 				AA25141D24C0FBFD006F4D6F /* MyTextField.swift in Sources */,
 				AADC0A5924C1B9630042CDA0 /* User.swift in Sources */,

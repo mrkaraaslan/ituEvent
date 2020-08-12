@@ -22,20 +22,52 @@ struct EventDetailsView: View {
         return formatter
     }
     
+    @State var eventImage: Image? = nil
+    @State var downloadProgress = 0.0
+    
     @State var alert: Alert? = nil
     @State var showAlert = false
     
     var body: some View {
         VStack {
             Form {
-                MyText(info: "Etkinlik adı", text: event.name)
-                MyText(info: "Konuşmacı", text: event.talker)
-                MyText(info: "Başlangıç", text: f.string(from: event.start))
-                MyText(info: "Bitiş", text: f.string(from: event.finish))
-                MyText(info: "Katılımcı sınırı", text: event.maxParticipants != "" ? event.maxParticipants : "Sınırsız")
-                MyText(info: "Katılım ücreti", text: event.price != "" ? event.price : "Ücretsiz")
-                MyText(info: "Adress", text: event.location)
-                MyText(info: "Açıklama", text: event.description)
+                Section {
+                    VStack {
+                        if eventImage != nil {
+                            eventImage?
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(maxWidth: .infinity)
+                                .clipShape(RoundedRectangle(cornerRadius: 15))
+                        }
+                        else {
+                            ZStack {
+                                Color.gray
+                                    .aspectRatio(contentMode: .fit)
+                                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                                MyProgressBar(progress: $downloadProgress)
+                            }
+                        }
+                    }
+                }
+                Section {
+                    MyText(info: "Etkinlik adı", text: event.name)
+                    MyText(info: "Konuşmacı", text: event.talker)
+                }
+                Section {
+                    MyText(info: "Başlangıç", text: f.string(from: event.start))
+                    MyText(info: "Bitiş", text: f.string(from: event.finish))
+                }
+                Section {
+                    MyText(info: "Katılımcı sınırı", text: event.maxParticipants != "" ? event.maxParticipants : "Sınırsız")
+                    MyText(info: "Katılım ücreti", text: event.price != "" ? event.price : "Ücretsiz")
+                }
+                Section {
+                    MyText(info: "Adress", text: event.location)
+                }
+                Section {
+                    MyText(info: "Açıklama", text: event.description)
+                }
             }
             VStack {
                 Button(action: {
@@ -46,6 +78,14 @@ struct EventDetailsView: View {
             }.padding()
         }
         .navigationBarTitle(event.name)
+        .onAppear() {
+            if self.event.image == nil {
+                self.getImage()
+            }
+            else {
+                self.eventImage = self.event.image
+            }
+        }
     }
     
     func deleteEvent() {
@@ -75,6 +115,31 @@ struct EventDetailsView: View {
                 
                 self.view.wrappedValue.dismiss()
             }
+        }
+    }
+    
+    func getImage() {
+        let ref = Storage.storage().reference(withPath: "Events/\(event.id)/img.jpg")
+        let task = ref.getData(maxSize: 4 * 1024 * 1024) { (Data, Error) in
+            
+            let eventIndex = self.current.cEvents.firstIndex { (Event) -> Bool in
+                Event.id == self.event.id
+            }
+            
+            if let data = Data {
+                let image = UIImage(data: data)
+                self.current.cEvents[eventIndex!].image = Image(uiImage: image!)
+                self.eventImage = Image(uiImage: image!)
+            }
+            else {
+                self.current.cEvents[eventIndex!].image = Image("itüevent")
+                self.eventImage = Image("itüevent")
+            }
+        }
+        
+        task.observe(.progress) { (snapshot) in
+            guard let progress = snapshot.progress?.fractionCompleted else {return}
+            self.downloadProgress = progress
         }
     }
 }

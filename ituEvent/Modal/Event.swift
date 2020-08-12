@@ -21,6 +21,7 @@ struct Event {
     var id = UUID().uuidString
     var creator: String // creator email
     var name: String
+    var image: Image?
     var start: Date {
         willSet { //newValue
             if newValue > finish {
@@ -56,6 +57,7 @@ struct Event {
     init() {
         creator = ""
         name = ""
+        image = nil
         start = Date()
         finish = Date()
         talker = ""
@@ -69,6 +71,7 @@ struct Event {
         self.creator = ""
         self.id = id
         self.name = name
+        self.image = nil
         self.start = start
         self.finish = finish
         self.talker = talker
