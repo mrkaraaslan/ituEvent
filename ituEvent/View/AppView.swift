@@ -14,7 +14,7 @@ struct AppView: View {
     
     var body: some View {
         TabView {
-            SearchEventView()
+            SearchEventView().environmentObject(current)
                 .tabItem {
                     Image(systemName: "magnifyingglass")
                     Text("Etkinlik Ara")
@@ -33,6 +33,7 @@ struct AppView: View {
             }
         }.onAppear() {
             self.current.info()
+            self.current.getEvents()
         }
     }
 }

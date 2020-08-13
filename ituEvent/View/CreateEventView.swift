@@ -116,6 +116,7 @@ struct AddInfo: View {
         }
         func toEvents() {
             db.collection("Events").document(event.id).setData([
+                "id" : event.id,
                 "creator" : self.current.user.email,
                 "name" : event.name,
                 "talker" : event.talker,

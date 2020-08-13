@@ -56,7 +56,7 @@ struct SignUpView: View {
                             self.showSignInView = true
                         }
                     }
-            }.padding([.leading, .trailing])
+            }.padding()
         }
     }
     

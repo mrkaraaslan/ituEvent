@@ -91,7 +91,7 @@ struct SignInView: View {
                 }
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
-            }.padding([.leading, .trailing])
+            }.padding()
         }
     }
     

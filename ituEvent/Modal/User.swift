@@ -15,12 +15,16 @@ class UserClass: ObservableObject  {
     @Published var cEvents: [Event] // list of created events
     //var aEvents: [EventAttendence] //list of event attendences
     
+    var dumpList: [Event] = []
+    @Published var searchEvents: [Event]
+    
     
     init() {
         self.user = User()
         self.isLoggedIn = false
         self.cEvents = []
         //self.aEvents = []
+        self.searchEvents = []
     }
     
     func info() { //: get user info from firebase
@@ -66,6 +70,30 @@ class UserClass: ObservableObject  {
                 }
             }
         }//: what if else
+    }
+    
+    func getEvents() { // to search new events --> all events
+        let db = Firestore.firestore()
+        if Auth.auth().currentUser != nil {
+            db.collection("Events").addSnapshotListener { (DocumentSnapshot, Error) in
+                guard let snaphot = DocumentSnapshot?.documents else {return}
+                
+                self.dumpList = []
+                
+                let datas = snaphot.map {
+                    $0.data()
+                }
+                
+                for data in datas {
+                    let ev = Event(data["id"] as! String, data["name"] as! String, (data["start"] as! Timestamp).dateValue(), (data["finish"] as! Timestamp).dateValue(), data["talker"] as! String, data["maxParticipants"] as! String, data["price"] as! String, data["location"] as! String, data["description"] as! String)
+                    self.dumpList.append(ev)
+                }
+                self.searchEvents = self.dumpList.sorted(by: { (E0, E1) -> Bool in
+                    E0.start <= E1.start
+                })
+            }
+        }
+        //: what if else
     }
 }
 

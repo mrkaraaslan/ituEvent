@@ -7,10 +7,23 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct SearchEventView: View {
+    
+    @EnvironmentObject var current: UserClass
+    
     var body: some View {
-        Text("Search Event")
+        VStack {
+            ForEach(self.current.searchEvents, id: \.id) { event in
+                Text(event.name)
+            }
+            Button(action: {
+                print("search: \(self.current.searchEvents.count)")
+            }) {
+                Text("Button")
+            }
+        }
     }
 }
 
