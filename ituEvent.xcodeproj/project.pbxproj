@@ -39,6 +39,7 @@
 		AAF2832F24C99EDC0045A192 /* CreateEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF2832E24C99EDC0045A192 /* CreateEventView.swift */; };
 		AAF637C724D33374001351AE /* EventDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF637C624D33374001351AE /* EventDetailsView.swift */; };
 		AAF8F8AC24DB0CCF00B6E4D1 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF8F8AB24DB0CCF00B6E4D1 /* Reachability.swift */; };
+		AAFA554524ED6C5C001537FE /* DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAFA554424ED6C5C001537FE /* DetailsView.swift */; };
 		E55FA6AFDAE83844BD60617E /* Pods_ituEvent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BB390180CDFD3B4D3E1440D /* Pods_ituEvent.framework */; };
 /* End PBXBuildFile section */
 
@@ -79,6 +80,7 @@
 		AAF2832E24C99EDC0045A192 /* CreateEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEventView.swift; sourceTree = "<group>"; };
 		AAF637C624D33374001351AE /* EventDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsView.swift; sourceTree = "<group>"; };
 		AAF8F8AB24DB0CCF00B6E4D1 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		AAFA554424ED6C5C001537FE /* DetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsView.swift; sourceTree = "<group>"; };
 		AD6145AFA50724DC06167A69 /* Pods-ituEvent.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ituEvent.debug.xcconfig"; path = "Target Support Files/Pods-ituEvent/Pods-ituEvent.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -156,6 +158,7 @@
 				AA25141E24C104F1006F4D6F /* SignUpView.swift */,
 				AA25142A24C11E13006F4D6F /* AppView.swift */,
 				AABF92EC24C211560073C661 /* SearchEventView.swift */,
+				AAFA554424ED6C5C001537FE /* DetailsView.swift */,
 				AA25142824C11DF7006F4D6F /* EventsView.swift */,
 				AA25142624C11DBC006F4D6F /* ProfileView.swift */,
 				AABF92EE24C22ABF0073C661 /* SettingsView.swift */,
@@ -320,6 +323,7 @@
 				AACC057424C8F16A00860709 /* MyNavigationButton.swift in Sources */,
 				AAAC3C4924C3639000F900EE /* MyText.swift in Sources */,
 				AA25142B24C11E13006F4D6F /* AppView.swift in Sources */,
+				AAFA554524ED6C5C001537FE /* DetailsView.swift in Sources */,
 				AA725F2124C0913100927A1B /* AppDelegate.swift in Sources */,
 				AA5DCC2824CA201D00A216CA /* MyTextView.swift in Sources */,
 				AA725F2324C0913100927A1B /* SceneDelegate.swift in Sources */,
