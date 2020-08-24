@@ -19,7 +19,7 @@ struct DetailsView: View {
     }
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             ScrollView {
                 VStack(spacing: 0) {
                     if event.image != nil {
@@ -27,7 +27,6 @@ struct DetailsView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(maxWidth: .infinity)
-                            .clipShape(RoundedRectangle(cornerRadius: 16))
                     }
                     else {
                         ZStack {
@@ -35,34 +34,65 @@ struct DetailsView: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(maxWidth: .infinity)
-                                .clipShape(RoundedRectangle(cornerRadius: 16))
                         }
                     }
-                }.padding()
+                }
                 
                 VStack {
-                    MyText(info: "Konuşmacı", text: event.talker)
-                    MyText(info: "Başlangıç", text: f.string(from: event.start))
-                    MyText(info: "Bitiş", text: f.string(from: event.finish))
-                    MyText(info: "Katılımcı sınırı", text: event.maxParticipants != "" ? event.maxParticipants : "Sınırsız")
-                    MyText(info: "Katılım ücreti", text: event.price != "" ? event.price : "Ücretsiz")
-                    MyText(info: "Adress", text: event.location)
-                    MyText(info: "Açıklama", text: event.description)
-                }.padding()
+                    Line(img: "music.mic", txt: event.talker)
+                    Line(img: "alarm", txt: "\(f.string(from: event.start)) ~ \(f.string(from: event.finish))")
+                    Line(img: "person.3", txt: event.maxParticipants != "" ? event.maxParticipants : "Sınırsız")
+                    Line(img: "turkishlirasign.circle", txt: event.price != "" ? event.price : "Ücretsiz")
+                    Line(img: "mappin.and.ellipse", txt: event.location)
+                    Text(event.description)
+                }.padding([.horizontal, .top])
             }
-            .navigationBarTitle(event.name)
             
             HStack { //: Buttons
-                Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/) {
-                    Text(/*@START_MENU_TOKEN@*/"Button"/*@END_MENU_TOKEN@*/)
+                Button(action: {
+                    
+                }) {
+                    HStack {
+                        MyImage(imageName: "calendar.badge.plus")
+                        Spacer()
+                    }
                 }
-            }
+            }.padding(.horizontal)
         }
+        .navigationBarTitle(event.name)
+        .navigationBarItems(trailing:
+            Button(action: {
+                //: report --> do i need that?
+            }) {
+                Image(systemName: "exclamationmark.triangle")
+                    .foregroundColor(.red)
+            }
+        )
     }
 }
 
 struct DetailsView_Previews: PreviewProvider {
     static var previews: some View {
         DetailsView(event: Event()).environmentObject(UserClass())
+    }
+}
+
+struct Line: View {
+    
+    var img: String
+    var txt: String
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            HStack {
+                MyImage(imageName: img)
+                Text(txt)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .lineLimit(2)
+            }
+            Rectangle()
+                .frame(height: 1)
+                .foregroundColor(Color(.placeholderText))
+        }
     }
 }

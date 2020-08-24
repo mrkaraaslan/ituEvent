@@ -74,23 +74,25 @@ struct EventCell: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }.padding(.horizontal, 7.5)
             }
-            Divider()
-            HStack { //: Buttons
-                Button(action: {
-                    
-                }) {
-                    MyImage(imageName: "calendar.badge.plus")
-                }
-                Spacer()
-                NavigationLink(destination: DetailsView(event: event).environmentObject(self.current)) {
-                     MyImage(imageName: "arrowshape.turn.up.right")
-                        .frame(width: 40, height: 40)
+            
+            VStack(spacing: 0) {
+                Divider()
+                HStack { //: Buttons
+                    Button(action: {
+                        
+                    }) {
+                        MyImage(imageName: "calendar.badge.plus")
+                    }
+                    Spacer()
+                    NavigationLink(destination: DetailsView(event: event).environmentObject(self.current)) {
+                         MyImage(imageName: "arrowshape.turn.up.right")
+                            .frame(width: 40, height: 40)
+                    }
                 }
             }
         }
         .overlay(
             RoundedRectangle(cornerRadius: 15).stroke(Color.gray)
         )
-        .padding()
     }
 }
