@@ -20,7 +20,7 @@ struct AppView: View {
                     Text("Etkinlik Ara")
             }
             
-            EventsView()
+            EventsView().environmentObject(current)
                 .tabItem {
                     Image(systemName: "list.bullet")
                     Text("Etkinlikler")

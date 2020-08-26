@@ -8,11 +8,6 @@
 
 import SwiftUI
 
-struct EventAttendence {
-    var event: Event
-    var attendence: Int // 0: declined | 1: accepted | else: not answered
-}
-
 class EventClass: ObservableObject { //will use o create new events
     @Published var event = Event()
 }
@@ -67,9 +62,9 @@ struct Event {
         description = ""
     }
     
-    init(_ id: String,_ name: String, _ start: Date, _ finish: Date, _ talker: String, _ max: String, _ price: String, _ location: String, _ description: String) {
-        self.creator = ""
+    init(_ id: String, _ creator: String, _ name: String, _ start: Date, _ finish: Date, _ talker: String, _ max: String, _ price: String, _ location: String, _ description: String) {
         self.id = id
+        self.creator = creator
         self.name = name
         self.image = nil
         self.start = start

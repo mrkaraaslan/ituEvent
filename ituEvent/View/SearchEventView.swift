@@ -13,6 +13,7 @@ struct SearchEventView: View {
     
     @EnvironmentObject var current: UserClass
     @State var showDetail = false
+    @State var hot = true
     
     var body: some View {
         NavigationView {
@@ -20,7 +21,7 @@ struct SearchEventView: View {
                 VStack(spacing: 16) {
                     if self.current.searchEvents.count != 0 {
                         ForEach(self.current.searchEvents, id: \.id) { Event in
-                            EventCell(event: Event).environmentObject(self.current)
+                            EventCell(event: Event, type: 1).environmentObject(self.current)
                         }
                     }
                     else {
@@ -29,7 +30,33 @@ struct SearchEventView: View {
                         }.frame(maxWidth: .infinity)
                     }
                 }.padding()
-            }.navigationBarTitle("Keşfet", displayMode: .inline)
+            }
+            .navigationBarTitle("Keşfet", displayMode: .inline)
+            .navigationBarItems(trailing:
+                ZStack {
+                    RoundedRectangle(cornerRadius: 7)
+                        .foregroundColor(.white)
+                        .frame(width: 48, height: 28)
+                        .offset(x: self.hot ? -24 : 24)
+                    HStack(spacing: 0) {
+                        Image(systemName: "flame")
+                            .foregroundColor(.black)
+                            .frame(width: 50, height: 30)
+                        
+                        Image(systemName: "alarm")
+                            .foregroundColor(.black)
+                            .frame(width: 50, height: 30)
+                    }
+                }
+                .frame(width: 100, height: 30)
+                .background(Color.init(.placeholderText))
+                .cornerRadius(7.5)
+                .onTapGesture {
+                    withAnimation() {
+                        self.hot.toggle()
+                    }
+                }
+            )
         }
     }
 }
@@ -38,61 +65,7 @@ struct SearchEventView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             SearchEventView().environmentObject(UserClass())
-            EventCell(event: Event(UUID().uuidString, "itüEvent tanıtım günü...", Date(), Date(), "Mehmet Karaaslan", "", "", "İTÜ", "Katılımlarınızdan dolayı teşekkür ederiz.")).environmentObject(UserClass())
+            EventCell(event: Event(UUID().uuidString, "karaaslan18@itu.edu.tr", "itüEvent tanıtım günü...", Date(), Date(), "Mehmet Karaaslan", "", "", "İTÜ", "Katılımlarınızdan dolayı teşekkür ederiz."), type: 1).environmentObject(UserClass())
         }
-    }
-}
-
-struct EventCell: View {
-    
-    @EnvironmentObject var current: UserClass
-    var event: Event
-    
-    var body: some View {
-        VStack {
-            VStack {
-                if event.image != nil {
-                    event.image!
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: .infinity)
-                        .clipShape(RoundedRectangle(cornerRadius: 15))
-                }
-                else {
-                    //Image("itüevent")
-                    Color.gray
-                        //.resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: .infinity)
-                        .background(Color.mainColor)
-                        .clipShape(RoundedRectangle(cornerRadius: 15))
-                }
-                
-                HStack {
-                    Text(event.name)
-                        .lineLimit(2)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }.padding(.horizontal, 7.5)
-            }
-            
-            VStack(spacing: 0) {
-                Divider()
-                HStack { //: Buttons
-                    Button(action: {
-                        
-                    }) {
-                        MyImage(imageName: "calendar.badge.plus")
-                    }
-                    Spacer()
-                    NavigationLink(destination: DetailsView(event: event).environmentObject(self.current)) {
-                         MyImage(imageName: "arrowshape.turn.up.right")
-                            .frame(width: 40, height: 40)
-                    }
-                }
-            }
-        }
-        .overlay(
-            RoundedRectangle(cornerRadius: 15).stroke(Color.gray)
-        )
     }
 }

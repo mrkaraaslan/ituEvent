@@ -98,8 +98,6 @@ struct AddInfo: View {
         })
     }
     func saveEvent() {
-        
-        
         func toUser() {
             db.collection("Users").document(self.current.user.email).updateData([
                 AnyHashable("cEvents") : FieldValue.arrayUnion([event.id])
@@ -125,7 +123,8 @@ struct AddInfo: View {
                 "maxParticipants" : event.maxParticipants,
                 "price" : event.price,
                 "location" : event.location,
-                "description" : event.description
+                "description" : event.description,
+                "date" : Date()
             ], merge: true){ error in
                 if let err = error {
                     let message = err.localizedDescription

@@ -8,12 +8,15 @@
 
 import SwiftUI
 import Firebase
+import SwiftKeychainWrapper
 
 class UserClass: ObservableObject  {
     @Published var user: User
     @Published var isLoggedIn: Bool
     @Published var cEvents: [Event] // list of created events
-    //var aEvents: [EventAttendence] //list of event attendences
+    
+    var dump: [Event] = []
+    @Published var aEvents: [Event] //list of attended events
     
     var dumpList: [Event] = []
     @Published var searchEvents: [Event]
@@ -23,7 +26,7 @@ class UserClass: ObservableObject  {
         self.user = User()
         self.isLoggedIn = false
         self.cEvents = []
-        //self.aEvents = []
+        self.aEvents = []
         self.searchEvents = []
     }
     
@@ -31,7 +34,6 @@ class UserClass: ObservableObject  {
         let db = Firestore.firestore()
         if let user = Auth.auth().currentUser {
             self.user.email = user.email!
-            self.user.name = user.displayName
             db.collection("Users").document(self.user.email).getDocument { (Document, Error) in
                 if let doc = Document {
                     if let data = doc.data() {
@@ -39,6 +41,8 @@ class UserClass: ObservableObject  {
                         self.user.department = data["department"] as? String
                         self.user.level = data["level"] as? Int
                         self.user.cEvents = data["cEvents"] as? [String] ?? []
+                        self.user.aEvents = data["aEvents"] as? [String] ?? []
+                        self.getAttendedEvents()
                     }
                 }
             }
@@ -55,7 +59,7 @@ class UserClass: ObservableObject  {
         }//: what if else?
     }
     
-    func getCreatedEvents(){
+    func getCreatedEvents() {
         let db = Firestore.firestore()
         if Auth.auth().currentUser != nil {
             cEvents = []
@@ -63,13 +67,86 @@ class UserClass: ObservableObject  {
                 db.collection("Events").document(id).getDocument { (Document, Error) in
                     if let doc = Document {
                         if let d = doc.data() {
-                            let e = Event(id, d["name"] as! String, (d["start"] as! Timestamp).dateValue(), (d["finish"] as! Timestamp).dateValue(), d["talker"] as! String, d["maxParticipants"] as! String, d["price"] as! String, d["location"] as! String, d["description"] as! String)
+                            let e = Event(id, d["creator"] as! String, d["name"] as! String, (d["start"] as! Timestamp).dateValue(), (d["finish"] as! Timestamp).dateValue(), d["talker"] as! String, d["maxParticipants"] as! String, d["price"] as! String, d["location"] as! String, d["description"] as! String)
                             self.cEvents.append(e) //: sort by event name or date?
                         }
                     }
                 }
             }
         }//: what if else
+    }
+    
+    var attendanceListener: ListenerRegistration? = nil {
+        didSet {
+            print("listen")
+        }
+    }
+    func getAttendedEvents() {
+        let db = Firestore.firestore()
+        if Auth.auth().currentUser != nil {
+            if self.user.aEvents != [] {
+                self.dump = []
+                if let l = attendanceListener {
+                    l.remove()
+                }
+                attendanceListener = db.collection("Events").whereField("id", in: self.user.aEvents).addSnapshotListener { (DocumentSnapshot, Error) in
+                    guard let snapshot = DocumentSnapshot else {return}
+                    
+                    snapshot.documentChanges.forEach { diff in
+                        let data = diff.document.data()
+                        
+                        if (diff.type == .added) {
+                            addEvent(with: data)
+                        }
+                        if (diff.type == .modified) {
+                            updateEvent(with: data)
+                        }
+                        if (diff.type == .removed) {
+                            let id = data["id"] as! String
+                            removeEvent(with: id)
+                        }
+                    }
+                    
+                    self.aEvents = self.dump.sorted(by: { (E0, E1) -> Bool in
+                        E0.start <= E1.start
+                    })
+                }
+            }
+            else {
+                self.aEvents = []
+            }
+        }
+        
+        // MARK: snapshot functions
+        func addEvent(with data: [String : Any]) {
+            let ev = Event(data["id"] as! String, data["creator"] as! String, data["name"] as! String, (data["start"] as! Timestamp).dateValue(), (data["finish"] as! Timestamp).dateValue(), data["talker"] as! String, data["maxParticipants"] as! String, data["price"] as! String, data["location"] as! String, data["description"] as! String)
+            self.dump.append(ev)
+        }
+        func updateEvent(with data: [String : Any]) { //: push notification
+            let ev = Event(data["id"] as! String, data["creator"] as! String,
+                           data["name"] as! String, (data["start"] as! Timestamp).dateValue(), (data["finish"] as! Timestamp).dateValue(), data["talker"] as! String, data["maxParticipants"] as! String, data["price"] as! String, data["location"] as! String, data["description"] as! String)
+            let index = self.dump.firstIndex { (Event) -> Bool in
+                Event.id == ev.id
+            }
+            if let i = index {
+                self.dump[i] = ev
+            }
+        }
+        func removeEvent(with id: String) {
+            let index = self.dump.firstIndex { (Event) -> Bool in
+                Event.id == id
+            }
+            if let i = index {
+                self.dump.remove(at: i)
+            }
+            db.collection("Users").document(self.user.email).updateData([
+                AnyHashable("aEvents") : FieldValue.arrayRemove([id])
+            ])
+        }
+        
+        func getImage() /*-> Image**/ {
+            
+        }
     }
     
     func getEvents() { // to search new events --> all events
@@ -92,6 +169,9 @@ class UserClass: ObservableObject  {
                         removeEvent(with: id)
                     }
                 }
+                self.dumpList = self.dumpList.filter { (Event) -> Bool in
+                    return Event.creator != KeychainWrapper.standard.string(forKey: "userEmail")
+                }
                 self.searchEvents = self.dumpList.sorted(by: { (E0, E1) -> Bool in
                     E0.start <= E1.start
                 })
@@ -101,11 +181,12 @@ class UserClass: ObservableObject  {
         
         // MARK: snapshot functions
         func addEvent(with data: [String : Any]) {
-            let ev = Event(data["id"] as! String, data["name"] as! String, (data["start"] as! Timestamp).dateValue(), (data["finish"] as! Timestamp).dateValue(), data["talker"] as! String, data["maxParticipants"] as! String, data["price"] as! String, data["location"] as! String, data["description"] as! String)
+            let ev = Event(data["id"] as! String, data["creator"] as! String, data["name"] as! String, (data["start"] as! Timestamp).dateValue(), (data["finish"] as! Timestamp).dateValue(), data["talker"] as! String, data["maxParticipants"] as! String, data["price"] as! String, data["location"] as! String, data["description"] as! String)
             self.dumpList.append(ev)
         }
         func updateEvent(with data: [String : Any]) {
-            let ev = Event(data["id"] as! String, data["name"] as! String, (data["start"] as! Timestamp).dateValue(), (data["finish"] as! Timestamp).dateValue(), data["talker"] as! String, data["maxParticipants"] as! String, data["price"] as! String, data["location"] as! String, data["description"] as! String)
+            let ev = Event(data["id"] as! String, data["creator"] as! String,
+                           data["name"] as! String, (data["start"] as! Timestamp).dateValue(), (data["finish"] as! Timestamp).dateValue(), data["talker"] as! String, data["maxParticipants"] as! String, data["price"] as! String, data["location"] as! String, data["description"] as! String)
             let index = self.dumpList.firstIndex { (Event) -> Bool in
                 Event.id == ev.id
             }

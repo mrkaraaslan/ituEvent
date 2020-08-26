@@ -7,10 +7,16 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct DetailsView: View {
     
+    @EnvironmentObject var current: UserClass
+    
     var event: Event
+    var type: Int // 1: search-details, 2: attended-detail
+    
+    @State var check = false
     var f: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
@@ -50,13 +56,27 @@ struct DetailsView: View {
             
             HStack { //: Buttons
                 Button(action: {
-                    
+                    if self.type == 1 {
+                        self.attend()
+                    }
+                    else {
+                        self.leave()
+                    }
                 }) {
                     HStack {
-                        MyImage(imageName: "calendar.badge.plus")
-                        Spacer()
+                        if self.type == 1 {
+                            MyImage(imageName: "calendar.badge.plus")
+                        }
+                        else {
+                            MyImage(imageName: "calendar.badge.minus")
+                        }
+                        
                     }
                 }
+                if self.check {
+                    MyImage(imageName: "checkmark", imageColor: .green)
+                }
+                Spacer()
             }.padding(.horizontal)
         }
         .navigationBarTitle(event.name)
@@ -69,11 +89,45 @@ struct DetailsView: View {
             }
         )
     }
+    
+    func attend() {
+        if Auth.auth().currentUser != nil  && !check {
+            let db = Firestore.firestore()
+            db.collection("Users").document(self.current.user.email).updateData([
+                AnyHashable("aEvents") : FieldValue.arrayUnion([event.id])
+            ]){ error in
+                if error == nil {
+                    self.current.user.aEvents.append(self.event.id)
+                    self.check = true
+                    self.current.getAttendedEvents()
+                }
+            }
+        }
+    }
+    
+    func leave() {
+        if Auth.auth().currentUser != nil {
+            let db = Firestore.firestore()
+            db.collection("Users").document(self.current.user.email).updateData([
+                AnyHashable("aEvents") : FieldValue.arrayRemove([event.id])
+            ]){ error in
+                if error == nil {
+                    let index = self.current.user.aEvents.firstIndex { (id) -> Bool in
+                        id == self.event.id
+                    }
+                    if let i = index {
+                        self.current.user.aEvents.remove(at: i)
+                    }
+                    self.current.getAttendedEvents()
+                }
+            }
+        }
+    }
 }
 
 struct DetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        DetailsView(event: Event()).environmentObject(UserClass())
+        DetailsView(event: Event(), type: 1).environmentObject(UserClass())
     }
 }
 
@@ -94,5 +148,60 @@ struct Line: View {
                 .frame(height: 1)
                 .foregroundColor(Color(.placeholderText))
         }
+    }
+}
+
+struct EventCell: View {
+    
+    @EnvironmentObject var current: UserClass
+    var event: Event
+    var type: Int
+    
+    var body: some View {
+        VStack {
+            VStack {
+                if event.image != nil {
+                    event.image!
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: .infinity)
+                        .clipShape(RoundedRectangle(cornerRadius: 15))
+                }
+                else {
+                    //Image("itüevent")
+                    Color.gray
+                        //.resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: .infinity)
+                        //.background(Color.mainColor)
+                        .clipShape(RoundedRectangle(cornerRadius: 15))
+                }
+                
+                HStack {
+                    Text(event.name)
+                        .lineLimit(2)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }.padding(.horizontal, 7.5)
+            }
+            
+            VStack(spacing: 0) {
+                Divider()
+                HStack { //: Buttons
+                    Button(action: {
+                        
+                    }) {
+                        MyImage(imageName: "calendar.badge.plus")
+                    }
+                    Spacer()
+                    NavigationLink(destination: DetailsView(event: event, type: type).environmentObject(self.current)) {
+                         MyImage(imageName: "arrowshape.turn.up.right")
+                            .frame(width: 40, height: 40)
+                    }
+                }
+            }
+        }
+        .overlay(
+            RoundedRectangle(cornerRadius: 15).stroke(Color.gray)
+        )
     }
 }
