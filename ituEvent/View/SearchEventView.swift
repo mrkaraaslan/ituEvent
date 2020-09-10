@@ -13,7 +13,6 @@ struct SearchEventView: View {
     
     @EnvironmentObject var current: UserClass
     @State var showDetail = false
-    @State var hot = true
     
     var body: some View {
         NavigationView {
@@ -37,7 +36,7 @@ struct SearchEventView: View {
                     RoundedRectangle(cornerRadius: 7)
                         .foregroundColor(.white)
                         .frame(width: 48, height: 28)
-                        .offset(x: self.hot ? -24 : 24)
+                        .offset(x: self.current.hot ? -24 : 24)
                     HStack(spacing: 0) {
                         Image(systemName: "flame")
                             .foregroundColor(.black)
@@ -52,8 +51,9 @@ struct SearchEventView: View {
                 .background(Color.init(.placeholderText))
                 .cornerRadius(7.5)
                 .onTapGesture {
+                    UserDefaults.standard.set(!self.current.hot, forKey: "isHot")
                     withAnimation() {
-                        self.hot.toggle()
+                        self.current.hot.toggle()
                     }
                 }
             )

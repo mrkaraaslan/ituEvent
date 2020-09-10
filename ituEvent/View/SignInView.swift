@@ -18,7 +18,7 @@ struct SignInView: View {
     @State var email = KeychainWrapper.standard.string(forKey: "userEmail") ?? ""
     @State var password = KeychainWrapper.standard.string(forKey: "userPassword") ?? ""
     
-    @State var showForgotEmailSheet = false
+    @State var showForgotPasswordSheet = false
     
     @State var alert: Alert? = nil
     @State var showAlert = false
@@ -76,10 +76,10 @@ struct SignInView: View {
                 HStack {
                     Text("Şifremi Unuttum")
                         .onTapGesture {
-                            self.showForgotEmailSheet = true
+                            self.showForgotPasswordSheet = true
                         }
-                    .sheet(isPresented: $showForgotEmailSheet, content: {
-                        ForgotEmailView()
+                    .sheet(isPresented: $showForgotPasswordSheet, content: {
+                        ForgotPasswordView()
                     })
                     Text("  /  ")
                     Text("Kayıt Ol")

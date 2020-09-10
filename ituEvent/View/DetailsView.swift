@@ -168,12 +168,10 @@ struct EventCell: View {
                         .clipShape(RoundedRectangle(cornerRadius: 15))
                 }
                 else {
-                    //Image("itüevent")
-                    Color.gray
-                        //.resizable()
+                    Image("itüevent")
+                        .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(maxWidth: .infinity)
-                        //.background(Color.mainColor)
                         .clipShape(RoundedRectangle(cornerRadius: 15))
                 }
                 
@@ -187,11 +185,6 @@ struct EventCell: View {
             VStack(spacing: 0) {
                 Divider()
                 HStack { //: Buttons
-                    Button(action: {
-                        
-                    }) {
-                        MyImage(imageName: "calendar.badge.plus")
-                    }
                     Spacer()
                     NavigationLink(destination: DetailsView(event: event, type: type).environmentObject(self.current)) {
                          MyImage(imageName: "arrowshape.turn.up.right")

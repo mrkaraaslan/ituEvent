@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import SwiftKeychainWrapper
 
 struct SettingsView: View {
     
@@ -27,6 +28,7 @@ struct SettingsView: View {
                     Form {
                         Section {
                             Button(action: {
+                                KeychainWrapper.standard.set(false, forKey: "isLoggedIn")
                                 self.logout = true
                                 self.presentationMode.wrappedValue.dismiss()
                             }) {

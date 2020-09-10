@@ -12,7 +12,7 @@
 		AA25141D24C0FBFD006F4D6F /* MyTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25141C24C0FBFD006F4D6F /* MyTextField.swift */; };
 		AA25141F24C104F1006F4D6F /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25141E24C104F1006F4D6F /* SignUpView.swift */; };
 		AA25142124C10A3B006F4D6F /* MySecureField.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25142024C10A3B006F4D6F /* MySecureField.swift */; };
-		AA25142324C10C0D006F4D6F /* ForgotEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25142224C10C0D006F4D6F /* ForgotEmailView.swift */; };
+		AA25142324C10C0D006F4D6F /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25142224C10C0D006F4D6F /* ForgotPasswordView.swift */; };
 		AA25142524C11A3F006F4D6F /* MyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25142424C11A3F006F4D6F /* MyButton.swift */; };
 		AA25142724C11DBC006F4D6F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25142624C11DBC006F4D6F /* ProfileView.swift */; };
 		AA25142924C11DF7006F4D6F /* EventsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25142824C11DF7006F4D6F /* EventsView.swift */; };
@@ -51,7 +51,7 @@
 		AA25141C24C0FBFD006F4D6F /* MyTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTextField.swift; sourceTree = "<group>"; };
 		AA25141E24C104F1006F4D6F /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		AA25142024C10A3B006F4D6F /* MySecureField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySecureField.swift; sourceTree = "<group>"; };
-		AA25142224C10C0D006F4D6F /* ForgotEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotEmailView.swift; sourceTree = "<group>"; };
+		AA25142224C10C0D006F4D6F /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
 		AA25142424C11A3F006F4D6F /* MyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyButton.swift; sourceTree = "<group>"; };
 		AA25142624C11DBC006F4D6F /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		AA25142824C11DF7006F4D6F /* EventsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsView.swift; sourceTree = "<group>"; };
@@ -154,7 +154,7 @@
 				AA725F2424C0913100927A1B /* ContentView.swift */,
 				AADC0A5524C1B87C0042CDA0 /* SignView.swift */,
 				AA25141824C0EF06006F4D6F /* SignInView.swift */,
-				AA25142224C10C0D006F4D6F /* ForgotEmailView.swift */,
+				AA25142224C10C0D006F4D6F /* ForgotPasswordView.swift */,
 				AA25141E24C104F1006F4D6F /* SignUpView.swift */,
 				AA25142A24C11E13006F4D6F /* AppView.swift */,
 				AABF92EC24C211560073C661 /* SearchEventView.swift */,
@@ -339,7 +339,7 @@
 				AABF92ED24C211560073C661 /* SearchEventView.swift in Sources */,
 				AA25141924C0EF06006F4D6F /* SignInView.swift in Sources */,
 				AADC0A5B24C1C5660042CDA0 /* Event.swift in Sources */,
-				AA25142324C10C0D006F4D6F /* ForgotEmailView.swift in Sources */,
+				AA25142324C10C0D006F4D6F /* ForgotPasswordView.swift in Sources */,
 				AA25142524C11A3F006F4D6F /* MyButton.swift in Sources */,
 				AA725F2524C0913100927A1B /* ContentView.swift in Sources */,
 				AACC057224C8D9D100860709 /* UserEventsView.swift in Sources */,

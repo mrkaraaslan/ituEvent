@@ -33,7 +33,6 @@ struct AppView: View {
             }
         }.onAppear() {
             self.current.info()
-            self.current.getEvents()
         }
     }
 }

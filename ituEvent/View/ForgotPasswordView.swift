@@ -9,7 +9,7 @@
 import SwiftUI
 import Firebase
 
-struct ForgotEmailView: View {
+struct ForgotPasswordView: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
@@ -94,6 +94,6 @@ struct ForgotEmailView: View {
 
 struct ForgotEmailView_Previews: PreviewProvider {
     static var previews: some View {
-        ForgotEmailView()
+        ForgotPasswordView()
     }
 }
