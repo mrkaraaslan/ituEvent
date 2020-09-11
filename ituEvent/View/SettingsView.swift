@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Firebase
 import SwiftKeychainWrapper
 
 struct SettingsView: View {
@@ -16,6 +17,9 @@ struct SettingsView: View {
     
     @State var isNotification = true
     @State var lang = 1
+    
+    @State var showAlert = false
+    @State var alert: Alert? = nil
     
     var body: some View {
         VStack {
@@ -28,15 +32,16 @@ struct SettingsView: View {
                     Form {
                         Section {
                             Button(action: {
-                                KeychainWrapper.standard.set(false, forKey: "isLoggedIn")
-                                self.logout = true
-                                self.presentationMode.wrappedValue.dismiss()
+                                self.signOut()
                             }) {
                                 HStack {
                                     Text("Çıkış yap").foregroundColor(.black)
                                     MyImage(imageName: "power", imageColor: .red)
                                 }
                             }
+                            .alert(isPresented: $showAlert, content: {
+                                self.alert!
+                            })
                         }.frame(maxWidth: .infinity, alignment: .center)
                         
                         Section {
@@ -64,7 +69,20 @@ struct SettingsView: View {
                 }.navigationBarTitle(Text("Ayarlar"), displayMode: .inline)
             }
         }
-        
+    }
+    
+    func signOut() {
+        do {
+            try Auth.auth().signOut()
+            self.logout = true
+            self.presentationMode.wrappedValue.dismiss()
+        } catch let Error as NSError {
+            let message = Error.localizedDescription
+            self.alert = Alert(title: Text("Çıkış Yapılamadı"), message: Text(message), primaryButton: .default(Text("Tekrar dene"), action: {
+                self.signOut()
+            }), secondaryButton: .cancel(Text("Vazgeç")))
+            self.showAlert = true
+        }
     }
 }
 

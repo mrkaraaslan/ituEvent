@@ -58,6 +58,7 @@ struct ProfileView: View {
                     MyImage(imageName: "gear", imageColor: .mainColor)
                 }.sheet(isPresented: $showSettingSheet, onDismiss: {
                     if self.logout {
+                        self.current.clear()
                         KeychainWrapper.standard.set(false, forKey: "isLoggedIn")
                         self.current.isLoggedIn = false
                     }

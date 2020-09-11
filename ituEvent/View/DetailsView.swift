@@ -16,7 +16,6 @@ struct DetailsView: View {
     var event: Event
     var type: Int // 1: search-details, 2: attended-detail
     
-    @State var check = false
     var f: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
@@ -54,30 +53,33 @@ struct DetailsView: View {
                 }.padding([.horizontal, .top])
             }
             
-            HStack { //: Buttons
-                Button(action: {
-                    if self.type == 1 {
-                        self.attend()
+            if self.current.user.email != self.event.creator {
+                HStack { //: Buttons
+                    if current.user.aEvents.contains(event.id) {
+                        MyImage(imageName: "hand.thumbsup", imageColor: .green)
                     }
-                    else {
-                        self.leave()
-                    }
-                }) {
-                    HStack {
-                        if self.type == 1 {
-                            MyImage(imageName: "calendar.badge.plus")
+                    if !current.user.aEvents.contains(event.id) || type == 2 {
+                        Button(action: {
+                            if self.type == 1 {
+                                self.attend()
+                            }
+                            else {
+                                self.leave()
+                            }
+                        }) {
+                            HStack {
+                                if self.type == 1 {
+                                    MyImage(imageName: "calendar.badge.plus")
+                                }
+                                else {
+                                    MyImage(imageName: "calendar.badge.minus")
+                                }
+                            }
                         }
-                        else {
-                            MyImage(imageName: "calendar.badge.minus")
-                        }
-                        
                     }
-                }
-                if self.check {
-                    MyImage(imageName: "checkmark", imageColor: .green)
-                }
-                Spacer()
-            }.padding(.horizontal)
+                    Spacer()
+                }.padding(.horizontal)
+            }
         }
         .navigationBarTitle(event.name)
         .navigationBarItems(trailing:
@@ -91,15 +93,14 @@ struct DetailsView: View {
     }
     
     func attend() {
-        if Auth.auth().currentUser != nil  && !check {
+        if Auth.auth().currentUser != nil {
             let db = Firestore.firestore()
             db.collection("Users").document(self.current.user.email).updateData([
                 AnyHashable("aEvents") : FieldValue.arrayUnion([event.id])
             ]){ error in
                 if error == nil {
                     self.current.user.aEvents.append(self.event.id)
-                    self.check = true
-                    self.current.getAttendedEvents()
+                    self.current.dump.append(self.event)
                 }
             }
         }
@@ -112,13 +113,19 @@ struct DetailsView: View {
                 AnyHashable("aEvents") : FieldValue.arrayRemove([event.id])
             ]){ error in
                 if error == nil {
-                    let index = self.current.user.aEvents.firstIndex { (id) -> Bool in
+                    var index = self.current.user.aEvents.firstIndex { (id) -> Bool in
                         id == self.event.id
                     }
                     if let i = index {
                         self.current.user.aEvents.remove(at: i)
                     }
-                    self.current.getAttendedEvents()
+                    
+                    index = self.current.dump.firstIndex(where: { (Event) -> Bool in
+                        Event.id == self.event.id
+                    })
+                    if let i = index {
+                        self.current.dump.remove(at: i)
+                    }
                 }
             }
         }
@@ -185,10 +192,16 @@ struct EventCell: View {
             VStack(spacing: 0) {
                 Divider()
                 HStack { //: Buttons
+                    if event.creator == self.current.user.email {
+                        MyImage(imageName: "star.fill")
+                    }
+                    else if self.current.user.aEvents.contains(event.id) {
+                         MyImage(imageName: "hand.thumbsup.fill", imageColor: .green)
+                    }
+                    
                     Spacer()
                     NavigationLink(destination: DetailsView(event: event, type: type).environmentObject(self.current)) {
                          MyImage(imageName: "arrowshape.turn.up.right")
-                            .frame(width: 40, height: 40)
                     }
                 }
             }

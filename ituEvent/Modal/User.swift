@@ -15,15 +15,22 @@ class UserClass: ObservableObject  {
     @Published var isLoggedIn: Bool
     @Published var cEvents: [Event] // list of created events
     
-    var dump: [Event] = []
-    @Published var aEvents: [Event] //list of attended events
+    var dump: [Event] = [] {
+        didSet {
+            self.aEvents = self.dump.sorted(by: { (E0, E1) -> Bool in
+                E0.start <= E1.start
+            })
+        }
+    }
+    //list of attended events
+    @Published var aEvents: [Event]
     
     @Published var hot = UserDefaults.standard.bool(forKey: "isHot") { // hot: new added, sort by date / clock: closest, sort by start
         didSet {
             self.getEvents()
         }
     }
-    var dumpList: [Event] = []
+    
     @Published var searchEvents: [Event]
     
     
@@ -82,40 +89,34 @@ class UserClass: ObservableObject  {
         }//: what if else
     }
     
-    var attendanceListener: ListenerRegistration? = nil {
-        didSet {
-            print("listen")
-        }
-    }
     func getAttendedEvents() {
         let db = Firestore.firestore()
         if Auth.auth().currentUser != nil {
             if self.user.aEvents != [] {
                 self.dump = []
-                if let l = attendanceListener {
-                    l.remove()
-                }
-                attendanceListener = db.collection("Events").whereField("id", in: self.user.aEvents).addSnapshotListener { (DocumentSnapshot, Error) in
-                    guard let snapshot = DocumentSnapshot else {return}
-                    
-                    snapshot.documentChanges.forEach { diff in
-                        let data = diff.document.data()
-                        
-                        if (diff.type == .added) {
-                            addEvent(with: data)
-                        }
-                        if (diff.type == .modified) {
-                            updateEvent(with: data)
-                        }
-                        if (diff.type == .removed) {
-                            let id = data["id"] as! String
-                            removeEvent(with: id)
+                
+                for id in self.user.aEvents {
+                    db.collection("Events").document(id).getDocument { (DocumentSnapshot, Error) in
+                        if let doc = DocumentSnapshot {
+                            if doc["id"] as? String != nil {
+                                addEvent(with: doc)
+                            }
+                            else { // no document
+                                db.collection("Users").document(self.user.email).updateData([
+                                    AnyHashable("aEvents") : FieldValue.arrayRemove([id])
+                                ]){ error in
+                                    if error == nil {
+                                        let index = self.user.aEvents.firstIndex { (eventId) -> Bool in
+                                            eventId == id
+                                        }
+                                        if let i = index {
+                                            self.user.aEvents.remove(at: i)
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
-                    
-                    self.aEvents = self.dump.sorted(by: { (E0, E1) -> Bool in
-                        E0.start <= E1.start
-                    })
                 }
             }
             else {
@@ -123,35 +124,19 @@ class UserClass: ObservableObject  {
             }
         }
         
-        // MARK: snapshot functions
-        func addEvent(with data: [String : Any]) {
-            let ev = Event(data["id"] as! String, data["creator"] as! String, data["name"] as! String, (data["start"] as! Timestamp).dateValue(), (data["finish"] as! Timestamp).dateValue(), data["talker"] as! String, data["maxParticipants"] as! String, data["price"] as! String, data["location"] as! String, data["description"] as! String)
-            self.dump.append(ev)
-        }
-        func updateEvent(with data: [String : Any]) { //: push notification
-            let ev = Event(data["id"] as! String, data["creator"] as! String,
-                           data["name"] as! String, (data["start"] as! Timestamp).dateValue(), (data["finish"] as! Timestamp).dateValue(), data["talker"] as! String, data["maxParticipants"] as! String, data["price"] as! String, data["location"] as! String, data["description"] as! String)
-            let index = self.dump.firstIndex { (Event) -> Bool in
-                Event.id == ev.id
-            }
-            if let i = index {
-                self.dump[i] = ev
-            }
-        }
-        func removeEvent(with id: String) {
-            let index = self.dump.firstIndex { (Event) -> Bool in
-                Event.id == id
-            }
-            if let i = index {
-                self.dump.remove(at: i)
-            }
-            db.collection("Users").document(self.user.email).updateData([
-                AnyHashable("aEvents") : FieldValue.arrayRemove([id])
-            ])
-        }
-        
-        func getImage() /*-> Image**/ {
+        func addEvent(with doc: DocumentSnapshot) {
             
+            let id = doc["id"] as! String
+            var ev = Event(doc["id"] as! String, doc["creator"] as! String, doc["name"] as! String, (doc["start"] as! Timestamp).dateValue(), (doc["finish"] as! Timestamp).dateValue(), doc["talker"] as! String, doc["maxParticipants"] as! String, doc["price"] as! String, doc["location"] as! String, doc["description"] as! String)
+            
+            let ref = Storage.storage().reference(withPath: "Events/\(id)/img.jpg")
+            ref.getData(maxSize: 4 * 1024 * 1024) { (Data, Error) in
+                if let data = Data {
+                    let image = UIImage(data: data)
+                    ev.image =  Image(uiImage: image!)
+                }
+                self.dump.append(ev)
+            }
         }
     }
     
@@ -168,11 +153,12 @@ class UserClass: ObservableObject  {
                         }
                         for index in self.searchEvents.indices {
                             let ref = Storage.storage().reference(withPath: "Events/\(self.searchEvents[index].id)/img.jpg")
-                                ref.getData(maxSize: 4 * 1024 * 1024) { (Data, Error) in
-                                    if let data = Data {
-                                        let image = UIImage(data: data)
-                                        self.searchEvents[index].image =  Image(uiImage: image!)
-                                    }
+                            
+                            ref.getData(maxSize: 4 * 1024 * 1024) { (Data, Error) in
+                                if let data = Data {
+                                    let image = UIImage(data: data)
+                                    self.searchEvents[index].image =  Image(uiImage: image!)
+                                }
                             }
                         }
                     }
@@ -186,6 +172,14 @@ class UserClass: ObservableObject  {
             
             self.searchEvents.append(ev)
         }
+    }
+    
+    func clear() {
+        user = User()
+        searchEvents = []
+        dump = []
+        aEvents = []
+        cEvents = []
     }
 }
 
